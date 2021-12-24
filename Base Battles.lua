@@ -13,9 +13,6 @@ local mouse = player:GetMouse()
 
 function getRealTeam()
     local net = require(game:GetService("ReplicatedStorage").Libraries.Global)
-    local GetTeam = function(v)
-        return net.Teams[v]
-    end
     local old_index
     old_index =
         hookmetamethod(
@@ -23,7 +20,7 @@ function getRealTeam()
         "__index",
         function(t, i)
             if checkcaller() and i == "Team" then
-                local pp = GetTeam(t)
+                local pp = net.Teams[t]
                 if pp then
                     return pp
                 end
