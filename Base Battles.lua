@@ -30,7 +30,7 @@ function getRealTeam()
     )
 end
 
---thx to bluwu
+--thx to e621
 function DoESP()
     getRealTeam()
     if not getgenv() then
