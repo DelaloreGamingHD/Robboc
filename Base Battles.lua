@@ -8,31 +8,15 @@ local player = game:GetService("Players").LocalPlayer
 local mouse = player:GetMouse()
 
 
-
-
-
-function getRealTeam()
-    local net = require(game:GetService("ReplicatedStorage").Libraries.Global)
-    local old_index
-    old_index =
-        hookmetamethod(
-        game,
-        "__index",
-        function(t, i)
-            if checkcaller() and i == "Team" then
-                local pp = net.Teams[t]
-                if pp then
-                    return pp
-                end
-            end
-            return old_index(t, i)
-        end
-    )
+local net = require(game:GetService("ReplicatedStorage").Libraries.Global)
+local GetTeam = function(v) 
+    return net.Teams[v]
 end
+
+
 
 --thx to e621
 function DoESP()
-    getRealTeam()
     if not getgenv() then
         game.Players.LocalPlayer:Kick("your exploit 100% will not support this damn, bye!")
     end
@@ -81,12 +65,12 @@ function DoESP()
         end)
     end
     for i,v in pairs(game.Players:GetPlayers()) do
-        if i~=1 and v.Character and v.Character:FindFirstChild("Head") and v.Team~=game.Players.LocalPlayer.Team then
-            ESP(v.Character.Head,v.Name,Color3.new(getgenv().colors["r"]/255,getgenv().colors["g"]/255,getgenv().colors["b"]/255))
+        if i~=1 and v.Character and v.Character:FindFirstChild("Head") and GetTeam(v) ~= GetTeam(game.Players.LocalPlayer) then
+            ESP(v.Character.Head,v.Name,Color3.new(1, 0, 0))
         end
         v.CharacterAdded:Connect(function(c)
-            repeat task.wait() until c:FindFirstChild("Head") and v.Team~=game.Players.LocalPlayer.Team
-            ESP(c.Head,v.Name,Color3.new(getgenv().colors["r"]/255,getgenv().colors["g"]/255,getgenv().colors["b"]/255))
+            repeat task.wait() until c:FindFirstChild("Head") and GetTeam(v) == GetTeam(game.Players.LocalPlayer)
+            ESP(c.Head,v.Name,Color3.new(0.082352, 1, 0))
         end)
     end
     game.Players.PlayerAdded:Connect(function(p)
@@ -117,7 +101,7 @@ b:Button(
 b:Button(
     "HitBox",
     function()
-        getRealTeam()
+        
         while true do
             wait(1)
             getgenv().HeadSize = 15
@@ -125,7 +109,7 @@ b:Button(
 
             if getgenv().Disabled then
                 for i, v in next, game:GetService("Players"):GetPlayers() do
-                    if v.Name ~= game:GetService("Players").LocalPlayer.Name and v.Team ~= game:GetService("Players").LocalPlayer.Team  then
+                    if v.Name ~= game:GetService("Players").LocalPlayer.Name and GetTeam(v) ~= GetTeam(game.Players.LocalPlayer)  then
                         pcall(
                             function()
                                 v.Character.HumanoidRootPart.Name = "xC6M3Vuz7QpsY5nv"
