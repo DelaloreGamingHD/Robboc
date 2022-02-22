@@ -1,3 +1,10 @@
+local client = game.Players.LocalPlayer
+local camera = workspace.CurrentCamera
+local mouse = client:GetMouse()
+local players = game:GetService("Players")
+local rs = game:GetService("RunService")
+local uis = game:GetService("UserInputService")
+
 local library = loadstring(game:HttpGet(("https://raw.githubusercontent.com/AikaV3rm/UiLib/master/Lib.lua")))()
 
 local w = library:CreateWindow("Base Battles")
@@ -5,7 +12,6 @@ local w = library:CreateWindow("Base Battles")
 local b = w:CreateFolder("Gun")
 
 local player = game:GetService("Players").LocalPlayer
-local mouse = player:GetMouse()
 
 
 local net = require(game:GetService("ReplicatedStorage").Libraries.Global)
@@ -175,5 +181,54 @@ b:Toggle(
 b:Button("ESP", function()
     DoESP()
 end)
+
+
+--Make all guns automatic
+b:Button(
+    "Aimbot",
+    function()
+        local function closestPlayer(fov)
+            local target = nil
+            local closest = fov or math.huge
+            for i,v in ipairs(players:GetPlayers()) do
+                if v.Character and client.Character and v ~= client then
+                    local _, onscreen = camera:WorldToScreenPoint(v.Character.Head.Position)
+                    if onscreen then
+                        local targetPos = camera:WorldToViewportPoint(v.Character.Head.Position)
+                        local mousePos = camera:WorldToViewportPoint(mouse.Hit.p)
+                        local dist = (Vector2.new(mousePos.X, mousePos.Y) - Vector2.new(targetPos.X, targetPos.Y)).magnitude
+                        if dist < closest then
+                            closest = dist
+                            target = v
+                        end
+                    end
+                end
+            end
+            return target
+         end
+        
+         local function aimAt(pos,smooth)
+            local targetPos = camera:WorldToScreenPoint(pos)
+            local mousePos = camera:WorldToScreenPoint(mouse.Hit.p)
+            mousemoverel((targetPos.X-mousePos.X)/smooth,(targetPos.Y-mousePos.Y)/smooth)
+          end
+        
+          local isAiming = false
+        uis.InputBegan:Connect(function(input)
+           if input.UserInputType == Enum.UserInputType.MouseButton2 then isAiming = true end
+        end)
+        uis.InputEnded:Connect(function(input)
+           if input.UserInputType == Enum.UserInputType.MouseButton2 then isAiming = false end
+        end)
+        
+        rs.RenderStepped:connect(function()
+            local t = closestPlayer(800)
+            if t and isAiming then
+                aimAt(t.Character.Head.Position, 2)
+            end
+         end)
+    end
+)
+
 
 b:DestroyGui()
