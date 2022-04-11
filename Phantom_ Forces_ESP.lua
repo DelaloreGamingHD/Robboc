@@ -4,6 +4,8 @@ local UserInputService = game:GetService("UserInputService")
 local FontValue = 3
 local Visibility = true
 getgenv().enemy = "Bright blue"
+getenv().esp_on_off = Enum.KeyCode.Five
+getenv().esp_size = Enum.KeyCode.Four
 local function CycleFont()
     if FontValue + 1 > 3 then
        FontValue = 1
