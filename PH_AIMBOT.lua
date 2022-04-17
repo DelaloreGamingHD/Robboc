@@ -32,16 +32,16 @@ function CheckRay(from,to)
 end
 
 local function closestPlayer(fov)
-   local target = nil --The player to return
-   local closest = fov or math.huge --The farthest a player can be (The fov circle)
+   local target = nil
+   local closest = fov or math.huge
    for i,v in ipairs(players:GetPlayers()) do
         local character = getbody.getbodyparts(v)
-        if character and client.Character and v ~= client and v.TeamColor ~= client.TeamColor  then --You can add teamcheck here or make it a variable in the function's parameters
-           local _, onscreen = camera:WorldToScreenPoint(character.head.Position) --Sometimes their position is not even on the screen so you have to make sure
+        if character and client.Character and v ~= client and v.TeamColor ~= client.TeamColor  then
+           local _, onscreen = camera:WorldToScreenPoint(character.head.Position)
            if onscreen then
-               local targetPos = camera:WorldToViewportPoint(character.head.Position) --Their screen position
-               local mousePos = camera:WorldToViewportPoint(mouse.Hit.p) --More acurate position of the mouse than just mouse.X
-               local dist = (Vector2.new(mousePos.X, mousePos.Y) - Vector2.new(targetPos.X, targetPos.Y)).magnitude --Distance from mouse
+               local targetPos = camera:WorldToViewportPoint(character.head.Position)
+               local mousePos = camera:WorldToViewportPoint(mouse.Hit.p)
+               local dist = (Vector2.new(mousePos.X, mousePos.Y) - Vector2.new(targetPos.X, targetPos.Y)).magnitude
                if dist < closest and CheckRay(game.Players.LocalPlayer.Character.Head,character.head) then
                     closest = dist
                     target = v
