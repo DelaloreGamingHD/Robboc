@@ -19,7 +19,7 @@ if not getgenv().releasetime then
 end
 
 game:GetService("RunService").RenderStepped:Connect(function()
-    if getgenv().triggerBot == true  then
+    if getgenv().triggerBot == true and game:GetService("Players").LocalPlayer.Character then
         if getgenv().head_check == false then
             if mouse.Target.Parent:FindFirstChild("Head") and mouse.Target.Parent.Parent.Name ~= "DeadBody" then
                 mouse1press()
