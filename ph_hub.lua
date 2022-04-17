@@ -1,6 +1,6 @@
 local windows = loadstring(game:HttpGet("https://raw.githubusercontent.com/ZepsyyCodesLUA/Synapse-Library-OBFUSCATED-/main/Source.lua"))()
 local win = windows:Create({
-    Title = "Skatbr",
+    Title = "22 hub ",
     Game = "Phantom Forces!"
 })
 
@@ -35,6 +35,15 @@ tab:Button({
     end
 })
 
+tab:TextBox({
+    Title = "ESP Info",
+    PlaceHolder = "5 to enable/disable ESP,4 to change text size",
+
+    Callback = function(args)
+        print(args)
+    end
+})
+
 tab:DropDown({
     Text = "Aimlock Method",
     PlaceHolder = 'Choose An Aim Method...',
@@ -54,11 +63,36 @@ tab:Slider({
         getgenv().aim_smooth = args
     end
 })
-
 local tab = win:NewTab({
     Title = "TriggerBot"
 })
 
-local tab = win:NewTab({
-    Title = "Misc."
+getgenv().TriggerBot_loaded = false
+tab:Toggle({
+    Title = "Enable TriggerBot",
+    Description = "Automatically shoots when cursor is placed over an enemy.",
+    Callback = function(args)
+		if not getgenv().TriggerBot_loaded then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Phantom_%20Forces_TRIGGERBOT.lua", true))()
+		end
+		getgenv().triggerBot = args
+    end
+})
+
+tab:Toggle({
+    Title = "Head only",
+    Description = "Shoot only if you aim at the head.",
+    Callback = function(args)
+        getgenv().head_check = args
+    end
+})
+
+tab:Slider({
+    Title = "releasetime",
+    MinValue = 0,
+    Def = 0,
+    MaxValue = 6,
+    callback = function(args)
+        getgenv().releasetime = args
+    end
 })
