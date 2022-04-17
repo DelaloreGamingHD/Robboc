@@ -70,7 +70,7 @@ rs.RenderStepped:connect(function()
     local t = closestPlayer(800)
     if isAiming and t then
         if CheckRay(game.Players.LocalPlayer.Character.Head, getbody.getbodyparts(t).head) then
-            aimAt(getbody.getbodyparts(t).getgenv().aim_at.Position, getgenv().aim_smooth)
+            aimAt(getbody.getbodyparts(t)[getgenv().aim_at].Position, getgenv().aim_smooth)
         end
     end
 end)
