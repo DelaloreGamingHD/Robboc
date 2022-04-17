@@ -14,7 +14,9 @@ for _, v in pairs(getgc(true)) do
     end
 end
 
-getgenv().aim_smooth = 2
+if not getgenv().aim_smooth then
+	getgenv().aim_smooth = 2
+end
 
 function CheckRay(from,to)
     local ray = Ray.new(from.Position,CFrame.new(from.Position,to.Position).LookVector.Unit*(from.Position-to.Position).Magnitude)
