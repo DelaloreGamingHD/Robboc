@@ -18,6 +18,8 @@ if not getgenv().aim_smooth then
 	getgenv().aim_smooth = 2
 end
 
+getgenv().aim_at = "head"
+
 function CheckRay(from,to)
     local ray = Ray.new(from.Position,CFrame.new(from.Position,to.Position).LookVector.Unit*(from.Position-to.Position).Magnitude)
 	local part,pos = workspace:FindPartOnRayWithIgnoreList(ray, {game.Players.LocalPlayer.Character})
@@ -68,7 +70,7 @@ rs.RenderStepped:connect(function()
     local t = closestPlayer(800)
     if isAiming and t then
         if CheckRay(game.Players.LocalPlayer.Character.Head, getbody.getbodyparts(t).head) then
-            aimAt(getbody.getbodyparts(t).head.Position, getgenv().aim_smooth)
+            aimAt(getbody.getbodyparts(t).getgenv().aim_at.Position, getgenv().aim_smooth)
         end
     end
 end)
