@@ -21,6 +21,13 @@ if not getgenv().aim_at then
 end
 
 
+local aimParts = {"head","torso"}
+local function randomAimPart(table)
+    local value = math.random(1,#table) -- Get random number with 1 to length of table.
+    return table[value]
+end
+
+
 local function CheckRay(from,to)
     local rayOrigin = from.Position
     local rayDirection = CFrame.new(from.Position,to.Position).LookVector.Unit*(from.Position-to.Position).Magnitude
@@ -66,10 +73,15 @@ local function aimAt(pos,smooth)
     local mousePos = camera:WorldToScreenPoint(mouse.Hit.p)
     mousemoverel((targetPos.X-mousePos.X)/smooth,(targetPos.Y-mousePos.Y)/smooth)
 end
-
+getgenv().random_aim = false
 local isAiming = false
 uis.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton2 then isAiming = true end
+    if input.UserInputType == Enum.UserInputType.MouseButton2 then
+        isAiming = true
+        if getgenv().random_aim then
+            getgenv().aim_at = randomAimPart(aimParts)
+        end
+    end
 end)
 uis.InputEnded:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton2 then isAiming = false end
@@ -77,7 +89,10 @@ end)
 
 rs.RenderStepped:connect(function()
     local t = closestPlayer(800)
-    if isAiming and t then
+    if isAiming and t and getgenv().aim_at ~= "random" then
         aimAt(getbody.getbodyparts(t)[getgenv().aim_at].Position, getgenv().aim_smooth)
+
+    elseif isAiming and t and getgenv().aim_at == "random" then
+        aimAt(getbody.getbodyparts(t)[randomAimPart(aimParts)].Position, getgenv().aim_smooth)
     end
 end)
