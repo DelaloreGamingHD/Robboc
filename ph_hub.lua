@@ -16,11 +16,11 @@ getgenv().aimbot_loaded = false
 tab:Button({
     Title = "Load Aimbot",
     Callback = function()
-		if not getgenv().aimbot_loaded then
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/PH_AIMBOT.lua", true))()
-			getgenv().aimbot_loaded = true
-		end
-        
+        if not getgenv().aimbot_loaded then
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/PH_AIMBOT.lua", true))()
+            getgenv().aimbot_loaded = true
+        end
+
     end
 })
 
@@ -28,10 +28,10 @@ getgenv().esp_loaded = false
 tab:Button({
     Title = "Load ESP",
     Callback = function()
-		if not getgenv().esp_loaded then
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Phantom_%20Forces_ESP.lua", true))()
-			getgenv().esp_loaded = true
-		end
+        if not getgenv().esp_loaded then
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Phantom_%20Forces_ESP.lua", true))()
+            getgenv().esp_loaded = true
+        end
     end
 })
 
@@ -50,7 +50,7 @@ tab:DropDown({
     Options = {'head', "torso"},
     Callback = function(args)
         print(args)
-		getgenv().aim_at = args
+        getgenv().aim_at = args
     end
 })
 
@@ -72,10 +72,10 @@ tab:Toggle({
     Title = "Enable TriggerBot",
     Description = "Automatically shoots when cursor is placed over an enemy.",
     Callback = function(args)
-		if not getgenv().TriggerBot_loaded then
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Phantom_%20Forces_TRIGGERBOT.lua", true))()
-		end
-		getgenv().triggerBot = args
+        if not getgenv().TriggerBot_loaded then
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Phantom_%20Forces_TRIGGERBOT.lua", true))()
+        end
+        getgenv().triggerBot = args
     end
 })
 
