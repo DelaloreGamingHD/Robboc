@@ -6,8 +6,6 @@ local rs = game:GetService("RunService")
 local uis = game:GetService("UserInputService")
 
 
-
-
 for _, v in pairs(getgc(true)) do
     if type(v) == "table" and type(rawget(v, 'getbodyparts')) == 'function' then
         getbody = v
@@ -18,17 +16,29 @@ if not getgenv().aim_smooth then
     getgenv().aim_smooth = 2
 end
 
-getgenv().aim_at = "head"
+if not getgenv().aim_at then
+    getgenv().aim_at = "head"
+end
 
-function CheckRay(from,to)
-    local ray = Ray.new(from.Position,CFrame.new(from.Position,to.Position).LookVector.Unit*(from.Position-to.Position).Magnitude)
-    local part,pos = workspace:FindPartOnRayWithIgnoreList(ray, {game.Players.LocalPlayer.Character})
-    if part.Name == "Head" then
-        return true
-    elseif not part then
-        return false
+
+local function CheckRay(from,to)
+    local rayOrigin = from.Position
+    local rayDirection = CFrame.new(from.Position,to.Position).LookVector.Unit*(from.Position-to.Position).Magnitude
+
+    local raycastParams = RaycastParams.new()
+    raycastParams.FilterDescendantsInstances = {client.Character.Parent}
+    raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+    local raycastResult = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
+    if raycastResult then
+        local hitPart = raycastResult.Instance
+        if hitPart.Parent.Name == "Player" then
+            return true
+        else
+            return false
+        end
     end
 end
+
 
 local function closestPlayer(fov)
     local target = nil
