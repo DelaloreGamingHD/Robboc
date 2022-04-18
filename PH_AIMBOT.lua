@@ -24,7 +24,6 @@ function CheckRay(from,to)
     local ray = Ray.new(from.Position,CFrame.new(from.Position,to.Position).LookVector.Unit*(from.Position-to.Position).Magnitude)
 	local part,pos = workspace:FindPartOnRayWithIgnoreList(ray, {game.Players.LocalPlayer.Character})
 	if part.Name == "Head" then
-        print(part)
 		return true
 	elseif not part then
 		return false
