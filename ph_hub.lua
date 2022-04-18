@@ -47,12 +47,17 @@ tab:TextBox({
 tab:DropDown({
     Text = "Aimlock Method",
     PlaceHolder = 'Choose An Aim Method...',
-    Options = {'head', "torso"},
+    Options = {'head', "torso","random"},
     Callback = function(args)
-        print(args)
-        getgenv().aim_at = args
+        if args == "random" then
+            getgenv().random_aim = true
+        else
+            getgenv().random_aim = false
+            getgenv().aim_at = args
+        end
     end
 })
+
 
 tab:Slider({
     Title = "Smoothing",
