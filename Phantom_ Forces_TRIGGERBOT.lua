@@ -21,12 +21,12 @@ end
 game:GetService("RunService").RenderStepped:Connect(function()
     if getgenv().triggerBot == true and game:GetService("Players").LocalPlayer.Character then
         if getgenv().head_check == false then
-            if mouse.Target.Parent:FindFirstChild("Head") and mouse.Target.Parent.Parent.Name ~= "DeadBody" then
+            if mouse.Target.Parent:FindFirstChild("Head") and mouse.Target.Parent.Name == "Player" and mouse.Target.Parent.Parent.Name ~= "DeadBody" then
                 mouse1press()
                 wait(getgenv().releasetime)
                 mouse1release()
             end
-        elseif mouse.Target.Name == "Head" and mouse.Target.Parent.Parent.Name ~= "DeadBody" and getgenv().head_check == true then
+        elseif mouse.Target.Parent:FindFirstChild("Head") and mouse.Target.Parent.Name == "Player" and mouse.Target.Parent.Parent.Name ~= "DeadBody"and getgenv().head_check == true then
                 mouse1press()
                 wait(getgenv().releasetime)
                 mouse1release()
