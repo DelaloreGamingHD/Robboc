@@ -3,7 +3,7 @@ local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local FontValue = 3
 local Visibility = true
-getgenv().enemy = "Bright blue"
+
 local function CycleFont()
     if FontValue + 1 > 3 then
        FontValue = 1
