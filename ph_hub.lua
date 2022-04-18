@@ -96,3 +96,13 @@ tab:Slider({
         getgenv().releasetime = args
     end
 })
+
+tab:Slider({
+    Title = "Reaction time",
+    MinValue = 0,
+    Def = 0,
+    MaxValue = 4,
+    callback = function(args)
+        getgenv().reaction_time = args
+    end
+})
