@@ -6,19 +6,19 @@ local Visibility = true
 
 local function CycleFont()
     if FontValue + 1 > 3 then
-       FontValue = 1
+        FontValue = 1
     else
         FontValue = FontValue + 1
     end
 end
 
 local function ModelTemplate()
-   local Objects = {
-       Box = Drawing.new("Quad"),
-       Name = Drawing.new("Text"),
-   } 
-   
-   return Objects
+    local Objects = {
+        Box = Drawing.new("Quad"),
+        Name = Drawing.new("Text"),
+    }
+
+    return Objects
 end
 
 local function GetPartCorners(Part)
@@ -34,7 +34,7 @@ end
 local function ApplyModel(Model)
     local Objects = ModelTemplate()
     local CurrentParent = Model.Parent
-    
+
     spawn(function()
         Objects.Name.Center = true
         Objects.Name.Visible = true
@@ -42,11 +42,11 @@ local function ApplyModel(Model)
         Objects.Name.Transparency = 1
         Objects.Box.Visible = true
         Objects.Box.Transparency = 1
-       
+
         while Model.Parent == CurrentParent do
             local Vector, OnScreen = Camera:WorldToScreenPoint(Model.Head.Position)
             local Distance = (Camera.CFrame.Position - Model.Torso.Position).Magnitude
-            
+
             if OnScreen and Model.Parent.Name ~= game:GetService("Players").LocalPlayer.Team.Name and Visibility then
                 Objects.Name.Position = Vector2.new(Vector.X, Vector.Y + math.clamp(Distance / 10, 10, 30) - 10)
                 Objects.Name.Size = math.clamp(30 - Distance / 10, 10, 30)
@@ -55,17 +55,17 @@ local function ApplyModel(Model)
                 Objects.Name.Font = FontValue
                 Objects.Name.Transparency = math.clamp((500 - Distance) / 200, 0.2, 1)
             else
-                Objects.Name.Visible = false 
+                Objects.Name.Visible = false
             end
-            
+
             Objects.Name.Text = string.format("[%s sd] [%s] Enemy", tostring(math.floor(Distance)), Model:FindFirstChildOfClass("Model") and Model:FindFirstChildOfClass("Model").Name or "NONE")
-            
+
             local PartCorners = GetPartCorners(Model.Torso)
             local VectorTR, OnScreenTR = Camera:WorldToScreenPoint(PartCorners.TR)
             local VectorBR, OnScreenBR = Camera:WorldToScreenPoint(PartCorners.BR)
             local VectorTL, OnScreenTL = Camera:WorldToScreenPoint(PartCorners.TL)
             local VectorBL, OnScreenBL = Camera:WorldToScreenPoint(PartCorners.BL)
-            
+
             if (OnScreenBL or OnScreenTL or OnScreenBR or OnScreenTR) and Model.Parent.Name ~= game:GetService("Players").LocalPlayer.Team.Name and Visibility then
                 Objects.Box.PointA = Vector2.new(VectorTR.X, VectorTR.Y + 36)
                 Objects.Box.PointB = Vector2.new(VectorTL.X, VectorTL.Y + 36)
@@ -78,10 +78,10 @@ local function ApplyModel(Model)
             else
                 Objects.Box.Visible = false
             end
-            
+
             RunService.RenderStepped:Wait()
         end
-        
+
         Objects.Name:Remove()
         Objects.Box:Remove()
     end)
@@ -114,8 +114,8 @@ end)
 UserInputService.InputBegan:Connect(function(Input, GP)
     if not GP and Input.KeyCode == Enum.KeyCode.Five then
         Visibility = not Visibility
-    end 
-    
+    end
+
     if not GP and Input.KeyCode == Enum.KeyCode.Four then
         CycleFont()
     end
