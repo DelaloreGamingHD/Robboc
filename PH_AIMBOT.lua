@@ -28,14 +28,14 @@ local function randomAimPart(table)
 end
 
 
+local raycastParams = RaycastParams.new()
+
 local function CheckRay(from,to)
     local rayOrigin = from.Position
     local rayDirection = CFrame.new(from.Position,to.Position).LookVector.Unit*(from.Position-to.Position).Magnitude
-
-    local raycastParams = RaycastParams.new()
     raycastParams.FilterDescendantsInstances = {client.Character.Parent}
     raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
-    local raycastResult = workspace:Raycast(rayOrigin, rayDirection, raycastParams)
+    local raycastResult = workspace:Raycast(rayOrigin,rayDirection,raycastParams)
     if raycastResult then
         local hitPart = raycastResult.Instance
         if hitPart.Parent.Name == "Player" then
@@ -45,6 +45,8 @@ local function CheckRay(from,to)
         end
     end
 end
+
+
 
 
 local function closestPlayer(fov)
