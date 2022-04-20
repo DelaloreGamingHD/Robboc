@@ -1,6 +1,6 @@
 local windows = loadstring(game:HttpGet("https://raw.githubusercontent.com/ZepsyyCodesLUA/Synapse-Library-OBFUSCATED-/main/Source.lua"))()
 local win = windows:Create({
-    Title = "22 hub ",
+    Title = "22 hub",
     Game = "Phantom Forces!"
 })
 
@@ -16,11 +16,11 @@ getgenv().aimbot_loaded = false
 tab:Button({
     Title = "Load Aimbot",
     Callback = function()
-        if not getgenv().aimbot_loaded then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/PH_AIMBOT.lua", true))()
-            getgenv().aimbot_loaded = true
-        end
-
+		if not getgenv().aimbot_loaded then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/PH_AIMBOT.lua", true))()
+			getgenv().aimbot_loaded = true
+		end
+        
     end
 })
 
@@ -28,10 +28,10 @@ getgenv().esp_loaded = false
 tab:Button({
     Title = "Load ESP",
     Callback = function()
-        if not getgenv().esp_loaded then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Phantom_%20Forces_ESP.lua", true))()
-            getgenv().esp_loaded = true
-        end
+		if not getgenv().esp_loaded then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Phantom_%20Forces_ESP.lua", true))()
+			getgenv().esp_loaded = true
+		end
     end
 })
 
@@ -58,6 +58,16 @@ tab:DropDown({
     end
 })
 
+getgenv().fov_Visible = false
+getgenv().fov = 400
+local fovcircle = Drawing.new("Circle")
+fovcircle.Visible = getgenv().fov_Visible
+fovcircle.Radius = getgenv().fov
+fovcircle.Color = Color3.fromRGB(0, 255, 136)
+fovcircle.Thickness = 1
+fovcircle.Filled = false
+fovcircle.Transparency = 0.3
+fovcircle.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2)
 
 tab:Slider({
     Title = "Smoothing",
@@ -68,6 +78,30 @@ tab:Slider({
         getgenv().aim_smooth = args
     end
 })
+
+
+tab:Toggle({
+    Title = "Show fov",
+    Description = "Draw Circle",
+    Callback = function(args)
+		getgenv().fov_Visible = args
+        fovcircle.Visible = getgenv().fov_Visible
+    end
+})
+
+tab:Slider({
+    Title = "Fov",
+    MinValue = 1,
+    Def = 400,
+    MaxValue = 800,
+    callback = function(args)
+        getgenv().fov = args
+        fovcircle.Radius = getgenv().fov
+    end
+})
+
+
+
 local tab = win:NewTab({
     Title = "TriggerBot"
 })
@@ -77,10 +111,10 @@ tab:Toggle({
     Title = "Enable TriggerBot",
     Description = "Automatically shoots when cursor is placed over an enemy.",
     Callback = function(args)
-        if not getgenv().TriggerBot_loaded then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Phantom_%20Forces_TRIGGERBOT.lua", true))()
-        end
-        getgenv().triggerBot = args
+		if not getgenv().TriggerBot_loaded then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Phantom_%20Forces_TRIGGERBOT.lua", true))()
+		end
+		getgenv().triggerBot = args
     end
 })
 
