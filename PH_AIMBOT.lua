@@ -28,21 +28,18 @@ local function randomAimPart(table)
 end
 
 
-local raycastParams = RaycastParams.new()
+local Rayparams = RaycastParams.new();
+Rayparams.FilterType = Enum.RaycastFilterType.Blacklist;
+
+
 
 local function CheckRay(from,to)
-    local rayOrigin = from.Position
-    local rayDirection = CFrame.new(from.Position,to.Position).LookVector.Unit*(from.Position-to.Position).Magnitude
-    raycastParams.FilterDescendantsInstances = {client.Character.Parent}
-    raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
-    local raycastResult = workspace:Raycast(rayOrigin,rayDirection,raycastParams)
-    if raycastResult then
-        local hitPart = raycastResult.Instance
-        if hitPart.Parent.Name == "Player" then
-            return true
-        else
-            return false
-        end
+    local CF = CFrame.new(from.Position, to.Position);
+    local Hit = game.Workspace:Raycast(CF.p, CF.LookVector * (from.Position - to.Position).magnitude, Rayparams);
+    if Hit.Instance.Name == "Head" then
+        return true
+    else
+        return false
     end
 end
 
@@ -60,6 +57,7 @@ local function closestPlayer(fov)
                 local targetPos = camera:WorldToViewportPoint(character.head.Position)
                 local mousePos = camera:WorldToViewportPoint(mouse.Hit.p)
                 local dist = (Vector2.new(mousePos.X, mousePos.Y) - Vector2.new(targetPos.X, targetPos.Y)).magnitude
+                Rayparams.FilterDescendantsInstances = {client.Character}
                 if dist < closest and CheckRay(game.Players.LocalPlayer.Character.Head,character.head) then
                     closest = dist
                     target = v
