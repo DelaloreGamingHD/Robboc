@@ -20,6 +20,9 @@ if not getgenv().aim_at then
     getgenv().aim_at = "head"
 end
 
+if not getgenv().fov then
+    getgenv().fov = 400
+end
 
 local aimParts = {"head","torso"}
 local function randomAimPart(table)
