@@ -92,10 +92,10 @@ end)
 
 rs.RenderStepped:connect(function()
     local t = closestPlayer(800)
-    if isAiming and t and getgenv().aim_at ~= "random" then
+    if isAiming and t and getgenv().aim_at ~= "random" and CheckRay(game.Players.LocalPlayer.Character.Head,getbody.getbodyparts(t).head)then
         aimAt(getbody.getbodyparts(t)[getgenv().aim_at].Position, getgenv().aim_smooth)
 
-    elseif isAiming and t and getgenv().aim_at == "random" then
+    elseif isAiming and t and getgenv().aim_at == "random" and CheckRay(game.Players.LocalPlayer.Character.Head,getbody.getbodyparts(t).head) then
         aimAt(getbody.getbodyparts(t)[randomAimPart(aimParts)].Position, getgenv().aim_smooth)
     end
 end)
