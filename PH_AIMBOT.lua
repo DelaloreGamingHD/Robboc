@@ -12,6 +12,15 @@ for _, v in pairs(getgc(true)) do
     end
 end
 
+for _, v in pairs(getgc(true)) do
+    if type(v) == "table" and rawget(v, "sensitivity") then
+        if v.sensitivity > 2 then
+            v.sensitivity = 0.5
+        end
+    end
+end
+
+
 if not getgenv().aim_smooth then
     getgenv().aim_smooth = 2
 end
