@@ -14,7 +14,7 @@ end
 
 for _, v in pairs(getgc(true)) do
     if type(v) == "table" and rawget(v, "sensitivity") then
-        if v.sensitivity > 2 then
+        if v.sensitivity > 0.7 then
             v.sensitivity = 0.5
         end
     end
@@ -22,7 +22,7 @@ end
 
 for _, v in pairs(getgc(true)) do
     if type(v) == "table" and rawget(v, "aimsensitivity") then
-        if v.aimsensitivity > 1.5 then
+        if v.aimsensitivity > 0.7 then
             v.aimsensitivity = 0.5
         end
     end
