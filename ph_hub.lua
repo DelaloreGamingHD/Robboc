@@ -129,7 +129,7 @@ tab:Toggle({
 tab:Slider({
     Title = "releasetime",
     MinValue = 0,
-    Def = 0,
+    Def = 1.5,
     MaxValue = 6,
     callback = function(args)
         getgenv().releasetime = args
