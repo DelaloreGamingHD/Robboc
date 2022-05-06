@@ -1,3 +1,10 @@
+for _, item in pairs(getgc(true)) do
+    if type(item) == "table" and rawget(item, "Ammo") then
+        print(item)
+    end
+end
+
+
 local players = game.GetService(game, "Players")
 local guiservice = game.GetService(game, "GuiService")
 local runservice = game.GetService(game, "RunService")
@@ -81,7 +88,7 @@ local OldNamecall
 OldNamecall = hookmetamethod(game, "__namecall", function(Self, ...)
     local args = {...}
     local method = getnamecallmethod()
-    if Self == remot and method == "FireServer" then
+    if Self == remot and method == "FireServer" and getgenv().SilentAim.Enabled == true then
         args[1] = getClosestPlayerToCursor().Character.Head
         return Self.FireServer(Self,unpack(args))
     end
