@@ -1,10 +1,3 @@
-for _, item in pairs(getgc(true)) do
-    if type(item) == "table" and rawget(item, "Ammo") then
-        print(item)
-    end
-end
-
-
 local players = game.GetService(game, "Players")
 local guiservice = game.GetService(game, "GuiService")
 local runservice = game.GetService(game, "RunService")
