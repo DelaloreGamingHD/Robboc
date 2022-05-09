@@ -55,13 +55,15 @@ Rayparams.FilterType = Enum.RaycastFilterType.Blacklist;
 
 
 local function CheckRay(from,to)
+    local pass = false
     local CF = CFrame.new(from.Position, to.Position);
     local Hit = game.Workspace:Raycast(CF.p, CF.LookVector * (from.Position - to.Position).magnitude, Rayparams);
     if Hit.Instance.Name == "Head" then
-        return true
+        pass = true
     else
-        return false
+        pass = false
     end
+    return pass
 end
 
 
@@ -79,7 +81,7 @@ local function closestPlayer(fov)
                 local mousePos = camera:WorldToViewportPoint(mouse.Hit.p)
                 local dist = (Vector2.new(mousePos.X, mousePos.Y) - Vector2.new(targetPos.X, targetPos.Y)).magnitude
                 Rayparams.FilterDescendantsInstances = {client.Character}
-                if dist < closest and CheckRay(game.Players.LocalPlayer.Character.Head,character.head) then
+                if dist < closest and CheckRay(client.Character.Head,character.head) then
                     closest = dist
                     target = v
                 end
