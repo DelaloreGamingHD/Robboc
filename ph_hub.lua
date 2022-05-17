@@ -145,3 +145,54 @@ tab:Slider({
         getgenv().reaction_time = args
     end
 })
+
+local tab = win:NewTab({
+    Title = "Unsafe"
+})
+if not getgenv().head_size then
+    getgenv().head_size = 2
+end
+
+function hitbox2x()
+    local players = game:GetService("Workspace").Players
+
+    local OldIndex = nil
+
+    OldIndex =
+        hookmetamethod(
+        players,
+        "__index",
+        function(Self, Key)
+            if not checkcaller() and getgenv().expandHitbox then
+                if not checkcaller() and tostring(Self) == "Head" and Key == "Size" then
+                    return Vector3.new(getgenv().head_size, getgenv().head_size, getgenv().head_size)
+                end
+            end
+
+            return OldIndex(Self, Key)
+        end
+    )
+end
+
+
+
+tab:Slider({
+    Title = "Head Size",
+    MinValue = 1,
+    Def = 2,
+    MaxValue = 5,
+    callback = function(args)
+        getgenv().head_size = args
+    end
+})
+
+tab:Toggle({
+    Title = "Expand head size",
+    Description = "Hitbox becomes bigger!",
+    Callback = function(args)
+        if not getgenv().expandHitbox then
+            hitbox2x()
+        end
+        getgenv().expandHitbox = args
+    end
+})
