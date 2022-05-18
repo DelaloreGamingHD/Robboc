@@ -154,6 +154,16 @@ if not getgenv().head_size then
     getgenv().head_size = 2
 end
 getgenv().exp = "Torso"
+getgenv().doRandom = false
+
+function getHitBox()
+    if getgenv().doRandom then
+        local parts = {"Head", "Torso"}
+        local chosen = parts[math.random(1, #parts)]
+        return chosen
+    end
+    return getgenv().exp
+end
 function hitbox2x()
     local players = game:GetService("Workspace").Players
 
@@ -166,7 +176,7 @@ function hitbox2x()
         function(Self, Key)
             if not checkcaller() and getgenv().expandHitbox then
                 
-                if not checkcaller() and tostring(Self) == getgenv().exp and Key == "Size" then
+                if not checkcaller() and tostring(Self) == getHitBox() and Key == "Size" then
                     return Vector3.new(getgenv().head_size, getgenv().head_size, getgenv().head_size)
                 end
             end
@@ -181,11 +191,20 @@ end
 tab:DropDown({
     Text = "Hitbox",
     PlaceHolder = 'Choose An Part...',
-    Options = {'Head', "Torso"},
+    Options = {'Head', "Torso", "Random"},
     Callback = function(args)
-        getgenv().exp = args
+        if args ~= "Random" then
+            getgenv().exp = args
+            getgenv().doRandom = false
+        end
+        if args == "Random" then
+            getgenv().doRandom = true
+        end
+        
     end
 })
+
+
 
 tab:Slider({
     Title = "Hitbox Size",
