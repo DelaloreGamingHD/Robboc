@@ -155,15 +155,18 @@ if not getgenv().head_size then
 end
 getgenv().exp = "Torso"
 getgenv().doRandom = false
-
-function getHitBox()
-    if getgenv().doRandom then
-        local parts = {"Head", "Torso"}
-        local chosen = parts[math.random(1, #parts)]
-        return chosen
+local parts = {"Head", "Torso"}
+spawn(function()
+    while true do 
+        if getgenv().doRandom == true then
+            getgenv().exp =  parts[math.random(1, #parts)]
+        end
+        wait(0.3)
     end
-    return getgenv().exp
-end
+end)
+
+
+
 function hitbox2x()
     local players = game:GetService("Workspace").Players
 
@@ -176,7 +179,7 @@ function hitbox2x()
         function(Self, Key)
             if not checkcaller() and getgenv().expandHitbox then
                 
-                if not checkcaller() and tostring(Self) == getHitBox() and Key == "Size" then
+                if not checkcaller() and tostring(Self) == getgenv().exp and Key == "Size" then
                     return Vector3.new(getgenv().head_size, getgenv().head_size, getgenv().head_size)
                 end
             end
