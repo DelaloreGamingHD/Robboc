@@ -237,7 +237,7 @@ function SendNote(message : string, time)
         Name = "Title!",
         Content = message,
         Image = "rbxassetid://4483345998",
-        Time = 3 or time
+        Time = time or 3
     })
 end
 
@@ -322,10 +322,11 @@ AimTab:AddToggle({
 	Default = getgenv().SilentAim.Enabled,
 	Callback = function(Value)
 		getgenv().SilentAim.Enabled = Value
-        if getgenv().sile_loaded == false then
+        
+        if getgenv().sile_loaded == false and Value == true then
             getgenv().sile_loaded = true
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Battle_Royale_Simulator_Silent_Aim.lua", true))()
             SendNote("Press -C- to teleport to target!",10)
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Battle_Royale_Simulator_Silent_Aim.lua", true))()
         end
 	end    
 })
