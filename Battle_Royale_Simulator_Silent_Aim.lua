@@ -1,24 +1,28 @@
-local players = game.GetService(game, "Players")
-local guiservice = game.GetService(game, "GuiService")
-local runservice = game.GetService(game, "RunService")
+local players = game:GetService("Players")
+local guiservice = game:GetService("GuiService")
+local runservice = game:GetService("RunService")
 local renderstepped = runservice.RenderStepped
 local localPlayer = players.LocalPlayer
-local currentCamera = game.GetService(game, "Workspace").CurrentCamera
-local mouse = localPlayer.GetMouse(localPlayer)
+local currentCamera = game:GetService("Workspace").CurrentCamera
+local mouse = localPlayer:GetMouse()
 
 
 
 if not getgenv().fov_color then
     getgenv().fov_color = Color3.fromRGB(255, 0, 68)
 end
-getgenv().SilentAim = {
-    Enabled = true,
-    FOVRep = true,
-    TeamCheck = false,
-    VisibleCheck = false,
-    FOV = 150,
-    HitChance = 100,
-}
+
+if not getgenv().SilentAim then
+    getgenv().SilentAim = {
+        Enabled = true,
+        FOVRep = true,
+        TeamCheck = false,
+        VisibleCheck = false,
+        FOV = 150,
+        HitChance = 100,
+    }
+end
+
 
 local circle = Drawing.new("Circle")
 function updateCircle()
