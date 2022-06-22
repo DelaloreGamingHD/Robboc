@@ -99,3 +99,10 @@ OldNamecall = hookmetamethod(game, "__namecall", function(Self, ...)
     end
     return OldNamecall(Self, ...)
 end)
+
+
+game:GetService("UserInputService").InputBegan:connect(function(inputObject, gameProcessedEvent)
+    if inputObject.KeyCode == Enum.KeyCode.C then --Also, could be written as [[inputObject.KeyCode == "R"]]
+        localPlayer.Character.HumanoidRootPart.CFrame = getClosestPlayerToCursor().Character.HumanoidRootPart.CFrame
+    end 
+end)
