@@ -232,12 +232,12 @@ Mic:AddButton({
 })
 
 
-function SendNote(message : string)
+function SendNote(message : string, time)
     OrionLib:MakeNotification({
         Name = "Title!",
         Content = message,
         Image = "rbxassetid://4483345998",
-        Time = 3
+        Time = 3 or time
     })
 end
 
@@ -325,6 +325,7 @@ AimTab:AddToggle({
         if getgenv().sile_loaded == false then
             getgenv().sile_loaded = true
             loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Battle_Royale_Simulator_Silent_Aim.lua", true))()
+            SendNote("Press -C- to teleport to target!",10)
         end
 	end    
 })
