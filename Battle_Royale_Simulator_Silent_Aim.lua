@@ -7,6 +7,10 @@ local currentCamera = game.GetService(game, "Workspace").CurrentCamera
 local mouse = localPlayer.GetMouse(localPlayer)
 
 
+
+if not getgenv().fov_color then
+    getgenv().fov_color = Color3.fromRGB(255, 0, 68)
+end
 getgenv().SilentAim = {
     Enabled = true,
     FOVRep = true,
@@ -22,7 +26,7 @@ function updateCircle()
         circle.Transparency = 1
         circle.Visible = SilentAim["FOVRep"]
         circle.Thickness = 2
-        circle.Color = Color3.fromRGB(231, 84, 128)
+        circle.Color = getgenv().fov_color
         circle.NumSides = 12
         circle.Radius = (SilentAim["FOV"] * 6) / 2
         circle.Filled = false
@@ -75,6 +79,10 @@ local getClosestPlayerToCursor = function()
     end
     return (chance and closestPlayer or localPlayer)
 end
+
+
+
+
 
 local remot = game:GetService("ReplicatedStorage").Remotes.Hit
 local OldNamecall
