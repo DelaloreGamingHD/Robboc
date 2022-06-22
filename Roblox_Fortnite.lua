@@ -224,7 +224,7 @@ function ctrl_teleport()
 end
 
 
-Tab:AddButton({
+Mic:AddButton({
 	Name = "Click Ctrl Teleport!",
 	Callback = function()
       		ctrl_teleport()
