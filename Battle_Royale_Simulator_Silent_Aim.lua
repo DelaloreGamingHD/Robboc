@@ -106,3 +106,15 @@ game:GetService("UserInputService").InputBegan:connect(function(inputObject, gam
         localPlayer.Character.HumanoidRootPart.CFrame = getClosestPlayerToCursor().Character.HumanoidRootPart.CFrame
     end 
 end)
+
+
+local highlight = Instance.new("Highlight")
+
+game.Players.LocalPlayer.Changed:Connect(function()
+    if not getClosestPlayerToCursor().Character:FindFirstChild("Highlight") then
+        highlight.Parent = getClosestPlayerToCursor().Character
+        highlight.FillColor = Color3.new(1, 0, 0)
+        highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    end 
+end)
+
