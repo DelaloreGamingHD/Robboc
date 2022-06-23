@@ -101,20 +101,20 @@ OldNamecall = hookmetamethod(game, "__namecall", function(Self, ...)
 end)
 
 
+
+
 game:GetService("UserInputService").InputBegan:connect(function(inputObject, gameProcessedEvent)
     if inputObject.KeyCode == Enum.KeyCode.C then --Also, could be written as [[inputObject.KeyCode == "R"]]
         localPlayer.Character.HumanoidRootPart.CFrame = getClosestPlayerToCursor().Character.HumanoidRootPart.CFrame
     end 
 end)
 
-
 local highlight = Instance.new("Highlight")
 
-game.Players.LocalPlayer.Changed:Connect(function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.Changed:Connect(function()
     if not getClosestPlayerToCursor().Character:FindFirstChild("Highlight") then
         highlight.Parent = getClosestPlayerToCursor().Character
         highlight.FillColor = Color3.new(1, 0, 0)
         highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     end 
 end)
-
