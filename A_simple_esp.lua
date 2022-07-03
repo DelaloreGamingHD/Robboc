@@ -7,7 +7,16 @@ local UserInputService = game:GetService("UserInputService")
 
 getgenv().useTeamColor = false
 local FontValue = 1
-getgenv().Visibility = false
+if not getgenv().Visibility then
+    getgenv().Visibility = false
+end
+
+if not getgenv().cham or getgenv().nameESP or getgenv().boxESP then
+    getgenv().cham = false
+    getgenv().nameESP = false
+    getgenv().boxESP = false
+end
+
 
 local function CycleFont()
     if FontValue + 1 > 3 then
@@ -46,21 +55,29 @@ local function DrawESP(plr)
     local highlight = Instance.new("Highlight")
     
     highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-    highlight.Enabled = getgenv().Visibility
+    highlight.Enabled = getgenv().cham
     local function Update()
         local c
         c = game:GetService("RunService").RenderStepped:Connect(function()
             if plr.Character ~= nil and plr.Character:FindFirstChildOfClass("Humanoid") ~= nil and plr.Character:FindFirstChild("HumanoidRootPart") ~= nil and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 and plr.Character:FindFirstChild("Head") ~= nil then
                 local Distance = (Camera.CFrame.Position - plr.Character.HumanoidRootPart.Position).Magnitude
                 local Vector, OnScreen = Camera:WorldToScreenPoint(plr.Character.Head.Position)
+
+
+
                 highlight.Parent = plr.Character
-                highlight.Enabled = getgenv().Visibility
+                if getgenv().Visibility then
+                    highlight.Enabled = getgenv().cham
+                end
                 if getgenv().useTeamColor then
                     highlight.FillColor = plr.TeamColor.Color
                 else
                     highlight.FillColor = Color3.fromHSV(math.clamp(Distance / 5, 0, 125) / 255, 0.75, 1)
                 end
-                if OnScreen and getgenv().Visibility then
+
+
+
+                if OnScreen and getgenv().Visibility and getgenv().nameESP then
                     Name.Position = Vector2.new(Vector.X, Vector.Y + math.clamp(Distance / 10, 10, 30) - 10)
                     Name.Size = math.clamp(30 - Distance / 10, 20, 30)
                     if getgenv().useTeamColor then
@@ -83,7 +100,7 @@ local function DrawESP(plr)
                 local VectorTL, OnScreenTL = Camera:WorldToScreenPoint(PartCorners.TL)
                 local VectorBL, OnScreenBL = Camera:WorldToScreenPoint(PartCorners.BL)
           
-                if (OnScreenBL or OnScreenTL or OnScreenBR or OnScreenTR) and getgenv().Visibility then
+                if (OnScreenBL or OnScreenTL or OnScreenBR or OnScreenTR) and getgenv().Visibility and getgenv().boxESP then
                     Box.PointA = Vector2.new(VectorTR.X, VectorTR.Y + 36)
                     Box.PointB = Vector2.new(VectorTL.X, VectorTL.Y + 36)
                     Box.PointC = Vector2.new(VectorBL.X, VectorBL.Y + 36)
@@ -103,7 +120,7 @@ local function DrawESP(plr)
             else
                 Box.Visible = false
                 Name.Visible = false
-                highlight.Enabled = getgenv().Visibility
+                highlight.Enabled = false
                 if game.Players:FindFirstChild(plr.Name) == nil then
                     c:Disconnect()
                 end
