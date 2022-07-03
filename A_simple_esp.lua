@@ -7,7 +7,7 @@ local UserInputService = game:GetService("UserInputService")
 
 getgenv().useTeamColor = false
 local FontValue = 1
-local Visibility = true
+getgenv().Visibility = false
 
 local function CycleFont()
     if FontValue + 1 > 3 then
@@ -46,7 +46,7 @@ local function DrawESP(plr)
     local highlight = Instance.new("Highlight")
     
     highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-    highlight.Enabled = Visibility
+    highlight.Enabled = getgenv().Visibility
     local function Update()
         local c
         c = game:GetService("RunService").RenderStepped:Connect(function()
@@ -54,13 +54,13 @@ local function DrawESP(plr)
                 local Distance = (Camera.CFrame.Position - plr.Character.HumanoidRootPart.Position).Magnitude
                 local Vector, OnScreen = Camera:WorldToScreenPoint(plr.Character.Head.Position)
                 highlight.Parent = plr.Character
-                highlight.Enabled = Visibility
+                highlight.Enabled = getgenv().Visibility
                 if getgenv().useTeamColor then
                     highlight.FillColor = plr.TeamColor.Color
                 else
                     highlight.FillColor = Color3.fromHSV(math.clamp(Distance / 5, 0, 125) / 255, 0.75, 1)
                 end
-                if OnScreen and Visibility then
+                if OnScreen and getgenv().Visibility then
                     Name.Position = Vector2.new(Vector.X, Vector.Y + math.clamp(Distance / 10, 10, 30) - 10)
                     Name.Size = math.clamp(30 - Distance / 10, 20, 30)
                     if getgenv().useTeamColor then
@@ -83,7 +83,7 @@ local function DrawESP(plr)
                 local VectorTL, OnScreenTL = Camera:WorldToScreenPoint(PartCorners.TL)
                 local VectorBL, OnScreenBL = Camera:WorldToScreenPoint(PartCorners.BL)
           
-                if (OnScreenBL or OnScreenTL or OnScreenBR or OnScreenTR) and Visibility then
+                if (OnScreenBL or OnScreenTL or OnScreenBR or OnScreenTR) and getgenv().Visibility then
                     Box.PointA = Vector2.new(VectorTR.X, VectorTR.Y + 36)
                     Box.PointB = Vector2.new(VectorTL.X, VectorTL.Y + 36)
                     Box.PointC = Vector2.new(VectorBL.X, VectorBL.Y + 36)
@@ -103,7 +103,7 @@ local function DrawESP(plr)
             else
                 Box.Visible = false
                 Name.Visible = false
-                highlight.Enabled = Visibility
+                highlight.Enabled = getgenv().Visibility
                 if game.Players:FindFirstChild(plr.Name) == nil then
                     c:Disconnect()
                 end
@@ -126,7 +126,7 @@ end)
 
 UserInputService.InputBegan:Connect(function(Input, GP)
     if not GP and Input.KeyCode == Enum.KeyCode.Five then
-        Visibility = not Visibility
+        getgenv().Visibility = not getgenv().Visibility
     end 
     
     if not GP and Input.KeyCode == Enum.KeyCode.Four then
