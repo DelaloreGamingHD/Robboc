@@ -142,14 +142,14 @@ end)
 
 
 UserInputService.InputBegan:Connect(function(Input, GP)
-    if not GP and Input.KeyCode == Enum.KeyCode.Five then
+    if not GP and Input.KeyCode == Enum.KeyCode.Delete then
         getgenv().Visibility = not getgenv().Visibility
     end 
     
-    if not GP and Input.KeyCode == Enum.KeyCode.Four then
+    if not GP and Input.KeyCode == Enum.KeyCode.End then
         CycleFont()
     end
-    if not GP and Input.KeyCode == Enum.KeyCode.Three then
+    if not GP and Input.KeyCode == Enum.KeyCode.Home then
         getgenv().useTeamColor = not getgenv().useTeamColor
     end
 end)
