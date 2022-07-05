@@ -87,12 +87,12 @@ local function DrawESP(plr)
                     end
                     Name.Visible = true
                     Name.Font = FontValue
-                    Name.Transparency = math.clamp((500 - Distance) / 200, 0.2, 1)
+                    --Name.Transparency = math.clamp((500 - Distance) / 200, 0.2, 1)
                 else
                     Name.Visible = false 
                 end
                 
-                Name.Text = string.format("[%s sd] [%s]", tostring(math.floor(Distance)), plr.Name)
+                Name.Text = string.format(plr.Name.." ["..tostring(math.floor(Distance*0.28)).." m]")
                  
                 local PartCorners = GetPartCorners(plr.Character.HumanoidRootPart)
                 local VectorTR, OnScreenTR = Camera:WorldToScreenPoint(PartCorners.TR)
@@ -112,7 +112,7 @@ local function DrawESP(plr)
                     end
                     
                     Box.Thickness = math.clamp(3 - (Distance / 100), 0, 3)
-                    Box.Transparency = math.clamp((500 - Distance) / 200, 0.2, 1)
+                    --Box.Transparency = math.clamp((500 - Distance) / 200, 0.2, 1)
                     Box.Visible = true
                 else
                     Box.Visible = false
