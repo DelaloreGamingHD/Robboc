@@ -92,7 +92,7 @@ local function DrawESP(plr)
                     Name.Visible = false 
                 end
                 
-                Name.Text = string.format(plr.Name.." ["..tostring(math.floor(Distance*0.28)).." m]")
+                Name.Text = string.format(plr.Name.." ["..tostring(math.floor(Distance*0.28)).."m]")
                  
                 local PartCorners = GetPartCorners(plr.Character.HumanoidRootPart)
                 local VectorTR, OnScreenTR = Camera:WorldToScreenPoint(PartCorners.TR)
