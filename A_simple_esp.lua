@@ -79,7 +79,7 @@ local function DrawESP(plr)
 
                 if OnScreen and getgenv().Visibility and getgenv().nameESP then
                     Name.Position = Vector2.new(Vector.X, Vector.Y + math.clamp(Distance / 10, 10, 30) - 10)
-                    Name.Size = math.clamp(30 - Distance / 10, 20, 30)
+                    Name.Size = math.clamp(30 - Distance / 10, 15, 30)
                     if getgenv().useTeamColor then
                         Name.Color = plr.TeamColor.Color
                     else
