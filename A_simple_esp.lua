@@ -53,9 +53,13 @@ local function DrawESP(plr)
     Box.Thickness = 2
     Box.Transparency = 1
     local highlight = Instance.new("Highlight")
-    
     highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     highlight.Enabled = getgenv().cham
+	local Line = Drawing.new("Line")
+	Line.Visible = false
+	Line.Thickness = 2
+
+
     local function Update()
         local c
         c = game:GetService("RunService").RenderStepped:Connect(function()
@@ -71,8 +75,11 @@ local function DrawESP(plr)
                 end
                 if getgenv().useTeamColor then
                     highlight.FillColor = plr.TeamColor.Color
+					Line.Color = plr.TeamColor.Color
+					
                 else
                     highlight.FillColor = Color3.fromHSV(math.clamp(Distance / 5, 0, 125) / 255, 0.75, 1)
+					Line.Color = Color3.fromHSV(math.clamp(Distance / 5, 0, 125) / 255, 0.75, 1)
                 end
 
 
@@ -80,6 +87,8 @@ local function DrawESP(plr)
                 if OnScreen and getgenv().Visibility and getgenv().nameESP then
                     Name.Position = Vector2.new(Vector.X, Vector.Y + math.clamp(Distance / 10, 10, 30) - 10)
                     Name.Size = math.clamp(30 - Distance / 10, 15, 30)
+					Line.From = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y - 135)
+					Line.To = Vector2.new(Vector.X, Vector.Y)
                     if getgenv().useTeamColor then
                         Name.Color = plr.TeamColor.Color
                     else
@@ -87,9 +96,11 @@ local function DrawESP(plr)
                     end
                     Name.Visible = true
                     Name.Font = FontValue
+					Line.Visible = true
                     --Name.Transparency = math.clamp((500 - Distance) / 200, 0.2, 1)
                 else
-                    Name.Visible = false 
+                    Name.Visible = false
+					Line.Visible = false
                 end
                 
                 Name.Text = string.format(plr.Name.." ["..tostring(math.floor(Distance*0.28)).."m]")
@@ -121,6 +132,7 @@ local function DrawESP(plr)
                 Box.Visible = false
                 Name.Visible = false
                 highlight.Enabled = false
+				Line.Visible = false
                 if game.Players:FindFirstChild(plr.Name) == nil then
                     c:Disconnect()
                 end
