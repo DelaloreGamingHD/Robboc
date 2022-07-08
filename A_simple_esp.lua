@@ -43,6 +43,9 @@ local function DrawESP(plr)
     Name.Visible = false
     Name.Outline = true
     Name.Transparency = 1
+	local Line = Drawing.new("Line")
+	Line.Visible = false
+	Line.Thickness = 2
     local Box = Drawing.new("Quad")
     Box.Visible = false
     Box.PointA = Vector2.new(0, 0)
@@ -55,9 +58,7 @@ local function DrawESP(plr)
     local highlight = Instance.new("Highlight")
     highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     highlight.Enabled = getgenv().cham
-	local Line = Drawing.new("Line")
-	Line.Visible = false
-	Line.Thickness = 2
+	
 
 
     local function Update()
