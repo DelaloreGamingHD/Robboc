@@ -120,46 +120,7 @@ end)
 b:Button(
     "Aimbot",
     function()
-        local function closestPlayer(fov)
-            local target = nil
-            local closest = fov or math.huge
-            for i,v in ipairs(players:GetPlayers()) do
-                if v.Character and client.Character and v ~= client then
-                    local _, onscreen = camera:WorldToScreenPoint(v.Character.Head.Position)
-                    if onscreen then
-                        local targetPos = camera:WorldToViewportPoint(v.Character.Head.Position)
-                        local mousePos = camera:WorldToViewportPoint(mouse.Hit.p)
-                        local dist = (Vector2.new(mousePos.X, mousePos.Y) - Vector2.new(targetPos.X, targetPos.Y)).magnitude
-                        if dist < closest then
-                            closest = dist
-                            target = v
-                        end
-                    end
-                end
-            end
-            return target
-         end
-        
-         local function aimAt(pos,smooth)
-            local targetPos = camera:WorldToScreenPoint(pos)
-            local mousePos = camera:WorldToScreenPoint(mouse.Hit.p)
-            mousemoverel((targetPos.X-mousePos.X)/smooth,(targetPos.Y-mousePos.Y)/smooth)
-          end
-        
-          local isAiming = false
-        uis.InputBegan:Connect(function(input)
-           if input.UserInputType == Enum.UserInputType.MouseButton2 then isAiming = true end
-        end)
-        uis.InputEnded:Connect(function(input)
-           if input.UserInputType == Enum.UserInputType.MouseButton2 then isAiming = false end
-        end)
-        
-        rs.RenderStepped:connect(function()
-            local t = closestPlayer(800)
-            if t and isAiming then
-                aimAt(t.Character.Head.Position, 2)
-            end
-         end)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Cornyllius/ROBLOX/main/AIMBOT%20HUB.lua", true))()
     end
 )
 
