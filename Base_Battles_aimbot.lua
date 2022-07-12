@@ -5,29 +5,8 @@ local players = game:GetService("Players")
 local rs = game:GetService("RunService")
 local uis = game:GetService("UserInputService")
 
-if not getgenv().FontValue then
-    local teams
-    for key, value in pairs(getgc(true)) do
-        if type(value) == "function" and debug.getinfo(value).name =="sortTeamList" then
-            local Teamtable = debug.getupvalue(value, 1)
-            if type(Teamtable) == "table" then
-                teams = Teamtable
-            end
-        end
-    end
 
 
-    local old_index
-    old_index = hookmetamethod(game, "__index", function(t, i)
-        if checkcaller() and i == "Team" or i == "TeamColor" then
-            local pp = teams[t]
-            if pp ~= nil then
-                return pp
-            end
-        end
-        return old_index(t, i)
-    end)
-end
 if not getgenv().aim_smooth then
     getgenv().aim_smooth = 2
     getgenv().fov = 400
@@ -63,12 +42,14 @@ end
 
 
 
+
+
 local function closestPlayer(fov)
     local target = nil
     local closest = fov or math.huge
     for i,v in ipairs(players:GetPlayers()) do
         local character = v.Character
-        if character and client.Character and v ~= client and character:FindFirstChild("Head") and v.TeamColor ~= client.TeamColor then
+        if v.Character ~= nil and v.Character:FindFirstChildOfClass("Humanoid") ~= nil and v.Character:FindFirstChild("HumanoidRootPart") ~= nil and v.Character:FindFirstChildOfClass("Humanoid").Health > 0 and v.Character:FindFirstChild("Head") ~= nil and v.TeamColor ~= client.TeamColor then
             local _, onscreen = camera:WorldToScreenPoint(character.Head.Position)
             if onscreen then
                 local targetPos = camera:WorldToViewportPoint(character.Head.Position)
@@ -106,12 +87,8 @@ end)
 
 rs.RenderStepped:connect(function()
     local t = closestPlayer(getgenv().fov)
-
+    
     if isAiming and t and getgenv().aim_at ~= "random" and CheckRay(t.Character.HumanoidRootPart.Position,t.Character.HumanoidRootPart)then
-        aimAt(t.Character[getgenv().aim_at].Position,getgenv().aim_smooth)
-
-    elseif isAiming and t and getgenv().aim_at == "random" and CheckRay(t.Character.HumanoidRootPart.Position,t.Character.HumanoidRootPart) then
-
         aimAt(t.Character[getgenv().aim_at].Position,getgenv().aim_smooth)
     end
 end)
