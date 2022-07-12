@@ -6,27 +6,30 @@ if not getgenv() then
     game.Players.LocalPlayer:Kick("Your exploit does not support this!")
 end
 
-local teams
-for key, value in pairs(getgc(true)) do
-    if type(value) == "function" and debug.getinfo(value).name =="sortTeamList" then
-        local Teamtable = debug.getupvalue(value, 1)
-        if type(Teamtable) == "table" then
-            teams = Teamtable
+if not getgenv().FontValue then
+    local teams
+    for key, value in pairs(getgc(true)) do
+        if type(value) == "function" and debug.getinfo(value).name =="sortTeamList" then
+            local Teamtable = debug.getupvalue(value, 1)
+            if type(Teamtable) == "table" then
+                teams = Teamtable
+            end
         end
     end
+
+
+    local old_index
+    old_index = hookmetamethod(game, "__index", function(t, i)
+        if checkcaller() and i == "Team" or i == "TeamColor" then
+            local pp = teams[t]
+            if pp ~= nil then
+                return pp
+            end
+        end
+        return old_index(t, i)
+    end)
+
 end
-
-
-local old_index
-old_index = hookmetamethod(game, "__index", function(t, i)
-    if checkcaller() and i == "Team" or i == "TeamColor" then
-        local pp = teams[t]
-        if pp ~= nil then
-            return pp
-        end
-    end
-    return old_index(t, i)
-end)
 
 
 local Player = game:GetService("Players").LocalPlayer
@@ -39,7 +42,7 @@ getgenv().Visibility = true
 
 local function CycleFont()
     if getgenv().FontValue + 1 > 3 then
-       getgenv().FontValue = 1
+        getgenv().FontValue = 1
     else
         getgenv().FontValue = getgenv().FontValue + 1
     end
@@ -88,25 +91,25 @@ local function DrawESP(plr)
                         else
                             Name.Color = Color3.fromRGB(174, 0, 255)
                         end
-                        
-                            
+
+
                     else
                         Name.Color = Color3.fromHSV(math.clamp(Distance / 5, 0, 125) / 255, 0.75, 1)
                     end
                     Name.Visible = true
                     Name.Font = getgenv().FontValue
                 else
-                    Name.Visible = false 
+                    Name.Visible = false
                 end
-                
+
                 Name.Text = string.format(plr.Name.." ["..tostring(math.floor(Distance*0.28)).."m]")
-                 
+
                 local PartCorners = GetPartCorners(plr.Character.HumanoidRootPart)
                 local VectorTR, OnScreenTR = Camera:WorldToScreenPoint(PartCorners.TR)
                 local VectorBR, OnScreenBR = Camera:WorldToScreenPoint(PartCorners.BR)
                 local VectorTL, OnScreenTL = Camera:WorldToScreenPoint(PartCorners.TL)
                 local VectorBL, OnScreenBL = Camera:WorldToScreenPoint(PartCorners.BL)
-          
+
                 if (OnScreenBL or OnScreenTL or OnScreenBR or OnScreenTR) and getgenv().Visibility then
                     Box.PointA = Vector2.new(VectorTR.X, VectorTR.Y + 36)
                     Box.PointB = Vector2.new(VectorTL.X, VectorTL.Y + 36)
@@ -120,11 +123,11 @@ local function DrawESP(plr)
                         else
                             Box.Color = Color3.fromRGB(174, 0, 255)
                         end
-                        
+
                     else
                         Box.Color = Color3.fromHSV(math.clamp(Distance / 5, 0, 125) / 255, 0.75, 1)
                     end
-                    
+
                     Box.Thickness = math.clamp(3 - (Distance / 100), 0, 3)
                     Box.Visible = true
                 else
