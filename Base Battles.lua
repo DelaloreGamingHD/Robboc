@@ -44,7 +44,7 @@ b:Button(
 
 --HitBox
 b:Button(
-    "HitBox removed dm *No idea#7972* if u want it back",
+    "HitBox dm-No idea#7972-",
     function()
         print("Hit Box is gone!")
     end
