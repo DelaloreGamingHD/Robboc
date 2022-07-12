@@ -16,6 +16,30 @@ if not getgenv().aim_at then
     getgenv().aim_at = "Head"
 end
 
+if not getgenv().FontValue then
+    local teams
+    for key, value in pairs(getgc(true)) do
+        if type(value) == "function" and debug.getinfo(value).name =="sortTeamList" then
+            local Teamtable = debug.getupvalue(value, 1)
+            if type(Teamtable) == "table" then
+                teams = Teamtable
+            end
+        end
+    end
+
+
+    local old_index
+    old_index = hookmetamethod(game, "__index", function(t, i)
+        if checkcaller() and i == "Team" or i == "TeamColor" then
+            local pp = teams[t]
+            if pp ~= nil then
+                return pp
+            end
+        end
+        return old_index(t, i)
+    end)
+
+end
 
 
 local Rayparams = RaycastParams.new();
