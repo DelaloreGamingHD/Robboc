@@ -41,14 +41,6 @@ b:Button(
     end
 )
 
-
---HitBox
-b:Button(
-    "HitBox dm-No idea#7972-",
-    function()
-        print("Hit Box is gone!")
-    end
-)
 --Make all guns automatic
 b:Button(
     "Automatic",
