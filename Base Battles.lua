@@ -44,31 +44,9 @@ b:Button(
 
 --HitBox
 b:Button(
-    "HitBox",
+    "HitBox removed dm *No idea#7972* if u want it back",
     function()
-
-        while true do
-            wait(1)
-            getgenv().HeadSize = 15
-            getgenv().Disabled = true
-
-            if getgenv().Disabled then
-                for i, v in next, game:GetService("Players"):GetPlayers() do
-                    if v.Name ~= game:GetService("Players").LocalPlayer.Name and GetTeam(v) ~= GetTeam(game.Players.LocalPlayer)  then
-                        pcall(
-                            function()
-                                v.Character.HumanoidRootPart.Name = "xC6M3Vuz7QpsY5nv"
-                                v.Character.xC6M3Vuz7QpsY5nv.Size =
-                                    Vector3.new(getgenv().HeadSize, getgenv().HeadSize, getgenv().HeadSize)
-                                v.Character.xC6M3Vuz7QpsY5nv.Transparency = 0.5
-                                v.Character.xC6M3Vuz7QpsY5nv.CanCollide = false
-                                v.Character.xC6M3Vuz7QpsY5nv.Color = Color3.fromRGB(210, 44, 255)
-                            end
-                        )
-                    end
-                end
-            end
-        end
+        print("Hit Box is gone!")
     end
 )
 --Make all guns automatic
@@ -134,7 +112,7 @@ aimBot:Button(
 
 aimBot:Slider("Aim Smoothness",{
     min = 0; -- min value of the slider
-    max = 20; -- max value of the slider
+    max = 10; -- max value of the slider
     precise = true; -- max 2 decimals
 },function(value)
     getgenv().aim_smooth = value
@@ -149,7 +127,7 @@ aimBot:Slider("Fov",{
     fovcircle.Radius = getgenv().fov
 end)
 
-aimBot:Dropdown("Aimlock Method",{'Head', "Torso","random"},true,function(mob) --true/false, replaces the current title "Dropdown" with the option that t
+aimBot:Dropdown("Aimlock Method",{'Head', "Torso"},true,function(mob) --true/false, replaces the current title "Dropdown" with the option that t
     getgenv().aim_at = mob
 end)
 
@@ -160,3 +138,4 @@ aimBot:Toggle("Show fov",function(bool)
 end)
 
 b:DestroyGui()
+aimBot:DestroyGui()
