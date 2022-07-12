@@ -18,9 +18,9 @@ local fovcircle = Drawing.new("Circle")
 fovcircle.Visible = getgenv().fov_Visible
 fovcircle.Radius = getgenv().fov
 fovcircle.Color = Color3.fromRGB(0, 255, 136)
-fovcircle.Thickness = 1
+fovcircle.Thickness = 2
 fovcircle.Filled = false
-fovcircle.Transparency = 0.3
+fovcircle.Transparency = 1
 fovcircle.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2)
 
 
@@ -135,6 +135,11 @@ end)
 aimBot:Toggle("Show fov",function(bool)
     getgenv().fov_Visible = bool
     fovcircle.Visible = getgenv().fov_Visible
+end)
+
+
+aimBot:ColorPicker("Fov Color",Color3.fromRGB(0, 255, 136),function(color) --Default color
+    fovcircle.Color = color
 end)
 
 b:DestroyGui()
