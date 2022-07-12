@@ -10,6 +10,8 @@ local aimBot = w:CreateFolder("Aimbot")
 
 local player = game:GetService("Players").LocalPlayer
 
+
+
 getgenv().fov_Visible = false
 getgenv().fov = 400
 local fovcircle = Drawing.new("Circle")
@@ -20,6 +22,10 @@ fovcircle.Thickness = 1
 fovcircle.Filled = false
 fovcircle.Transparency = 0.3
 fovcircle.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2)
+
+
+
+
 
 --no recoil
 b:Button(
@@ -35,6 +41,14 @@ b:Button(
     end
 )
 
+
+--HitBox
+b:Button(
+    "HitBox dm-No idea#7972-",
+    function()
+        print("Hit Box is gone!")
+    end
+)
 --Make all guns automatic
 b:Button(
     "Automatic",
@@ -113,7 +127,7 @@ aimBot:Slider("Fov",{
     fovcircle.Radius = getgenv().fov
 end)
 
-aimBot:Dropdown("Aimlock Method",{'Head', "Torso"},true,function(mob) --true/false, replaces the current title "Dropdown" with the option that t
+aimBot:Dropdown("Aimlock Method",{'Head', "UpperTorso"},true,function(mob) --true/false, replaces the current title "Dropdown" with the option that t
     getgenv().aim_at = mob
 end)
 
