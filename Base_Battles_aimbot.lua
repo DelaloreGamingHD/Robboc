@@ -17,12 +17,6 @@ if not getgenv().aim_at then
 end
 
 
-local aimParts = {"Head","Torso"}
-local function randomAimPart(table)
-    local value = math.random(1,#table) -- Get random number with 1 to length of table.
-    return table[value]
-end
-
 
 local Rayparams = RaycastParams.new();
 Rayparams.FilterType = Enum.RaycastFilterType.Blacklist;
@@ -88,7 +82,7 @@ end)
 rs.RenderStepped:connect(function()
     local t = closestPlayer(getgenv().fov)
     
-    if isAiming and t and getgenv().aim_at ~= "random" and CheckRay(t.Character.HumanoidRootPart.Position,t.Character.HumanoidRootPart)then
+    if isAiming and t and CheckRay(t.Character.HumanoidRootPart.Position,t.Character.HumanoidRootPart)then
         aimAt(t.Character[getgenv().aim_at].Position,getgenv().aim_smooth)
     end
 end)
