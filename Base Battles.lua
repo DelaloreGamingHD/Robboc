@@ -1,19 +1,27 @@
-local client = game.Players.LocalPlayer
-local camera = workspace.CurrentCamera
+local client = game:GetService("Players").LocalPlayer
 local mouse = client:GetMouse()
-local players = game:GetService("Players")
-local rs = game:GetService("RunService")
-local uis = game:GetService("UserInputService")
 
 local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wall%20v3')))()
 
 local w = library:CreateWindow("Base Battles")
 
 local b = w:CreateFolder("Gun")
+local aimBot = w:CreateFolder("Aimbot")
 
 local player = game:GetService("Players").LocalPlayer
 
 
+
+getgenv().fov_Visible = false
+getgenv().fov = 400
+local fovcircle = Drawing.new("Circle")
+fovcircle.Visible = getgenv().fov_Visible
+fovcircle.Radius = getgenv().fov
+fovcircle.Color = Color3.fromRGB(0, 255, 136)
+fovcircle.Thickness = 1
+fovcircle.Filled = false
+fovcircle.Transparency = 0.3
+fovcircle.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2)
 
 
 
@@ -38,7 +46,7 @@ b:Button(
 b:Button(
     "HitBox",
     function()
-        
+
         while true do
             wait(1)
             getgenv().HeadSize = 15
@@ -88,7 +96,7 @@ b:Bind(
 )
 
 --Triggerbot
-b:Toggle(
+aimBot:Toggle(
     "Triggerbot ",
     function(bool)
         shared.toggle = bool
@@ -116,13 +124,39 @@ b:Button("ESP", function()
 end)
 
 
---Make all guns automatic
-b:Button(
+
+aimBot:Button(
     "Aimbot",
     function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Cornyllius/ROBLOX/main/AIMBOT%20HUB.lua", true))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Base_Battles_aimbot.lua", true))()
     end
 )
 
+aimBot:Slider("Aim Smoothness",{
+    min = 0; -- min value of the slider
+    max = 20; -- max value of the slider
+    precise = true; -- max 2 decimals
+},function(value)
+    getgenv().aim_smooth = value
+end)
+
+aimBot:Slider("Fov",{
+    min = 1; -- min value of the slider
+    max = 800; -- max value of the slider
+    precise = true; -- max 2 decimals
+},function(value)
+    getgenv().fov = value
+    fovcircle.Radius = getgenv().fov
+end)
+
+aimBot:Dropdown("Aimlock Method",{'Head', "Torso","random"},true,function(mob) --true/false, replaces the current title "Dropdown" with the option that t
+    getgenv().aim_at = mob
+end)
+
+
+aimBot:Toggle("Show fov",function(bool)
+    getgenv().fov_Visible = bool
+    fovcircle.Visible = getgenv().fov_Visible
+end)
 
 b:DestroyGui()
