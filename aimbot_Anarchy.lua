@@ -8,7 +8,7 @@ local uis = game:GetService("UserInputService")
 
 
 if not getgenv().aim_smooth then
-    getgenv().aim_smooth = 1
+    getgenv().aim_smooth = 3
     getgenv().fov = 400
 end
 
