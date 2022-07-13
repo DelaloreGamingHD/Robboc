@@ -8,8 +8,9 @@ if not getgenv().aimloaded then
     loadstring(game:HttpGet(('https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/aimbot_Anarchy.lua')))()
     getgenv().aimloaded = true
 end
-
+local guiservice = game:GetService("GuiService")
 local fovcircle = Drawing.new("Circle")
+local mouse = game:GetService("Players").LocalPlayer:GetMouse()
 local TabAim = Window:MakeTab({
     Name = "Aimbot",
     Icon = "rbxassetid://4483345998",
@@ -110,6 +111,9 @@ fovcircle.Filled = false
 fovcircle.Transparency = 1
 fovcircle.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2)
 
+game:GetService("RunService").RenderStepped:Connect(function()
+    fovcircle.Position = Vector2.new(mouse.X, mouse.Y + (guiservice.GetGuiInset(guiservice).Y))
+end)
 TabAim:AddToggle({
 	Name = "Fov Circle",
 	Default = getgenv().fov_Visible,
