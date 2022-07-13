@@ -56,6 +56,8 @@ local function DrawESP(plr)
     
     highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
     highlight.Enabled = getgenv().cham
+    local folder = Instance.new("Folder", game:GetService("CoreGui"))
+    highlight.Parent = folder
     local function Update()
         local c
         c = game:GetService("RunService").RenderStepped:Connect(function()
@@ -65,7 +67,7 @@ local function DrawESP(plr)
 
 
 
-                highlight.Parent = plr.Character
+                highlight.Adornee = plr.Character
                 if getgenv().Visibility then
                     highlight.Enabled = getgenv().cham
                 end
