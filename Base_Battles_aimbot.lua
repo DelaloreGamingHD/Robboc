@@ -103,6 +103,19 @@ uis.InputEnded:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton2 then isAiming = false end
 end)
 
+local userInputService = game:GetService("UserInputService")
+local UserGameSettings = UserSettings():GetService("UserGameSettings")
+
+local number = 0.2
+
+local mouseDeltaSensitivity = number  / UserGameSettings.MouseSensitivity 
+userInputService.MouseDeltaSensitivity = mouseDeltaSensitivity
+
+UserGameSettings:GetPropertyChangedSignal("MouseSensitivity"):Connect(function()
+	mouseDeltaSensitivity = number  / UserGameSettings.MouseSensitivity 
+	userInputService.MouseDeltaSensitivity = mouseDeltaSensitivity
+end)
+
 rs.RenderStepped:connect(function()
     local t = closestPlayer(getgenv().fov)
     
