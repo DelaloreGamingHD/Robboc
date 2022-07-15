@@ -78,7 +78,7 @@ TabAim:AddToggle({
 TabAim:AddDropdown({
 	Name = "Aimlock Method",
 	Default = "Head",
-	Options = {"Head", "Torso"},
+	Options = {"Head", "Torso","HumanoidRootPart", "PrimaryPart"},
 	Callback = function(Value)
 		getgenv().aim_at = Value
 	end    
