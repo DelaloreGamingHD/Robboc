@@ -24,6 +24,14 @@ local Tab = Window:MakeTab({
 })
 
 
+
+local micTab = Window:MakeTab({
+    Name = "Misc",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+
 getgenv().cham = false
 getgenv().nameESP = false
 getgenv().boxESP = false
@@ -130,6 +138,50 @@ TabAim:AddSlider({
 
 
 
+
+local function TP()
+    local player = game:GetService("Players").LocalPlayer
+    local UIS = game:GetService("UserInputService")
+    local Mouse = player:GetMouse()
+
+
+    local deb = false  
+    local opos = player.Character.HumanoidRootPart.CFrame
+
+    local OldIndex = nil
+
+    OldIndex = hookmetamethod(game, "__index", function(Self, Key)
+        if not checkcaller() and self == "HumanoidRootPart" and self.Parent == player.Character and key == "CFrame" and deb then
+            return opos
+        end
+        return OldIndex(Self, Key)
+    end)
+
+
+    local function tp(newpos)
+        if player.Character ~= nil and player.Character:FindFirstChild("HumanoidRootPart") ~= nil then
+            opos = player.Character.HumanoidRootPart.CFrame
+            deb = true
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(newpos)
+            deb = false
+        end
+    end
+
+    UIS.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 and UIS:IsKeyDown(Enum.KeyCode.LeftControl) then
+            if (Mouse.Hit.p - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 900 then
+                tp(Mouse.Hit.p + Vector3.new(0, 3, 0))
+            end
+            
+        end
+    end)
+end
+
+
+
+
+
+
 getgenv().fov_Visible = true
 
 fovcircle.Visible = getgenv().fov_Visible
@@ -218,6 +270,13 @@ Tab:AddToggle({
 })
 
 
+micTab:AddButton({
+	Name = "Ctrl + Click TP",
+	Callback = function()
+      		TP()
+  	end    
+})
+
 
 local orionion = game:GetService("CoreGui"):FindFirstChild("Orion")
 
@@ -236,7 +295,6 @@ local destroygui = Tab:AddButton({
         })
     end    
 })
-
 
 
 OrionLib:Init()
