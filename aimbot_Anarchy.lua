@@ -39,7 +39,14 @@ local function CheckRay(pos, part)
 end
 
 
-
+getgenv().predict = true
+getgenv().timP = 0.05
+local function predictPosition(part, timeInterval)
+	if getgenv().predict == false then
+		return part.Position
+	end
+    return part.Position + part.Velocity * timeInterval
+end
 
 
 local function closestPlayer(fov)
@@ -105,11 +112,13 @@ UserGameSettings:GetPropertyChangedSignal("MouseSensitivity"):Connect(function()
 	userInputService.MouseDeltaSensitivity = mouseDeltaSensitivity
 end)
 
+local t
 
 rs.RenderStepped:connect(function()
-    local t = closestPlayer(getgenv().fov)
-    
+    if isAiming then
+        t = closestPlayer(getgenv().fov)
+    end
     if isAiming and t and CheckRay(t.Character.HumanoidRootPart.Position,t.Character.HumanoidRootPart)then
-        aimAt(t.Character[getgenv().aim_at].Position,getgenv().aim_smooth)
+        aimAt(predictPosition(t.Character[getgenv().aim_at],getgenv().timP),getgenv().aim_smooth)
     end
 end)
