@@ -34,6 +34,14 @@ getgenv().Visibility = false
 
 
 
+function SendNote(message : string, time)
+    OrionLib:MakeNotification({
+        Name = "Title!",
+        Content = message,
+        Image = "rbxassetid://4483345998",
+        Time = time or 3
+    })
+end
 
 
 
@@ -82,6 +90,28 @@ TabAim:AddSlider({
 	end    
 })
 
+TabAim:AddToggle({
+	Name = "Aim prediction",
+	Default = true,
+	Callback = function(Value)
+        getgenv().predict = Value
+        SendNote("It is recommended that you set aim smoothness to 1",3)
+	end    
+})
+
+TabAim:AddSlider({
+	Name = "Prediction time",
+	Min = 0.01,
+	Max = 4,
+	Default = 0.05,
+	Color = Color3.fromRGB(208, 0, 255),
+	Increment = 0.01,
+	ValueName = "Sec",
+	Callback = function(Value)
+		getgenv().timP = Value
+	end    
+})
+
 
 TabAim:AddSlider({
 	Name = "Fov",
@@ -94,7 +124,6 @@ TabAim:AddSlider({
 	Callback = function(Value)
 		getgenv().fov = Value
         fovcircle.Radius = getgenv().fov
-        
 	end    
 })
 
@@ -177,14 +206,6 @@ Tab:AddToggle({
 })
 
 
-function SendNote(message : string, time)
-    OrionLib:MakeNotification({
-        Name = "Title!",
-        Content = message,
-        Image = "rbxassetid://4483345998",
-        Time = time or 3
-    })
-end
 
 
 
