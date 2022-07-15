@@ -88,7 +88,7 @@ end
 getgenv().random_aim = true
 local isAiming = false
 uis.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton2 then
+    if input.KeyCode == Enum.KeyCode.E then
         isAiming = true
         if getgenv().random_aim then
             getgenv().aim_at = randomAimPart(aimParts)
@@ -96,7 +96,7 @@ uis.InputBegan:Connect(function(input)
     end
 end)
 uis.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton2 then isAiming = false end
+    if input.KeyCode == Enum.KeyCode.E then isAiming = false end
 end)
 
 local userInputService = game:GetService("UserInputService")
