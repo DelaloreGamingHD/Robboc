@@ -72,7 +72,7 @@ local function closestPlayer(fov)
 end
 
 
-local aimParts = {"Head","Torso"}
+local aimParts = {"Head","PrimaryPart", "HumanoidRootPart"}
 local function randomAimPart(table)
     local value = math.random(1,#table) -- Get random number with 1 to length of table.
     return table[value]
