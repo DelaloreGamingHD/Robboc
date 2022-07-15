@@ -173,17 +173,3 @@ end
 game:GetService("Players").PlayerAdded:Connect(function(v)
     DrawESP(v)
 end)
-
-
-UserInputService.InputBegan:Connect(function(Input, GP)
-    if not GP and Input.KeyCode == Enum.KeyCode.Delete then
-        getgenv().Visibility = not getgenv().Visibility
-    end
-
-    if not GP and Input.KeyCode == Enum.KeyCode.End then
-        CycleFont()
-    end
-    if not GP and Input.KeyCode == Enum.KeyCode.Home then
-        getgenv().useTeamColor = not getgenv().useTeamColor
-    end
-end)
