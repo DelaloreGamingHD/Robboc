@@ -81,7 +81,7 @@ local function CheckRay(from,to)
 end
 
 local function predictPosition(part, timeInterval)
-    if getgenv().aimbotPrediction == false or modules.gamelogic.currentgun.data == nil then
+    if getgenv().aimbotPrediction == false or (modules.gamelogic.currentgun == nil and modules.gamelogic.currentgun.data == nil) then
         return part.Position
     elseif getgenv().predictionMethod == "Advanced" then
         local currentGun = modules.gamelogic.currentgun;
