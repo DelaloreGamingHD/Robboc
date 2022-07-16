@@ -10,6 +10,7 @@ local players = game:GetService("Players")
 local rs = game:GetService("RunService")
 local uis = game:GetService("UserInputService")
 local replicatedfirst = game:GetService("ReplicatedFirst");
+local FindFirstChild  = game.FindFirstChild
 if not mousemoverel or not getgenv or not getgc then
     client:Kick("Your exploit is not supported")
 end
@@ -64,21 +65,16 @@ local Rayparams = RaycastParams.new();
 Rayparams.FilterType = Enum.RaycastFilterType.Blacklist;
 
 
-
-local function CheckRay(from,to)
+local function isVisible(p,...)
     if getgenv().visibleCheck == false then
         return true
     end
-    local pass = false
-    local CF = CFrame.new(from.Position, to.Position);
-    local Hit = workspace:Raycast(CF.p, CF.LookVector * (from.Position - to.Position).magnitude, Rayparams);
-    if Hit.Instance.Name == "Head" then
-        pass = true
-    else
-        pass = false
-    end
-    return pass
+
+    return #camera:GetPartsObscuringTarget({p}, {camera, client.Character,workspace.Ignore,...}) == 0
 end
+
+
+
 
 local function predictPosition(part, timeInterval)
     if getgenv().aimbotPrediction == false or (modules.gamelogic.currentgun == nil or modules.gamelogic.currentgun.data == nil) then
@@ -105,7 +101,7 @@ local function closestPlayer(fov)
                 local mousePos = camera:WorldToViewportPoint(mouse.Hit.p)
                 local dist = (Vector2.new(mousePos.X, mousePos.Y) - Vector2.new(targetPos.X, targetPos.Y)).magnitude
                 Rayparams.FilterDescendantsInstances = {client.Character}
-                if dist < closest and CheckRay(client.Character.Head,character.head) then
+                if dist < closest and isVisible(character.head.Position, character.torso.Parent) then
                     closest = dist
                     target = v
                 end
