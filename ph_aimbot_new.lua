@@ -133,7 +133,7 @@ uis.InputEnded:Connect(function(input)
 end)
 
 rs.RenderStepped:connect(function()
-    if not client.Character.HumanoidRootPart or not isAiming then return end
+    if not client.Character or not isAiming then return end
     local t = closestPlayer(getgenv().fov)
 
     if t and getgenv().aim_at ~= "Random" then
