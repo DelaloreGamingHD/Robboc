@@ -1,15 +1,19 @@
 if not game:IsLoaded() then
     game.Loaded:Wait()
 end
+
 local Player = game:GetService("Players").LocalPlayer
 local Camera = game:GetService("Workspace").CurrentCamera
-local UserInputService = game:GetService("UserInputService")
 
+
+local modules = {}
 if game.PlaceId == 292439477 then
     for _, v in next, getgc(true) do
         if type(v) == "table" then
             if rawget(v, "getbodyparts") then
                 replication = v;
+            elseif type(v) == "table" and rawget(v, "getplayerhealth") then
+                modules.hud = v
             end
         end
     end
@@ -29,6 +33,12 @@ if game.PlaceId == 292439477 then
 end
 
 
+local function GetHealth(plr : Player)
+    return modules.hud:getplayerhealth(plr)
+end
+local function isAlive(plr : Player)
+    return modules.hud:isplayeralive(plr)
+end
 
 local function isTeam(plr)
     if getgenv().TeamCheck == false then return false end
@@ -67,7 +77,7 @@ local function DrawESP(plr)
     local function Update()
         local c
         c = game:GetService("RunService").RenderStepped:Connect(function()
-            if getgenv().Visibility == true and plr.Character ~= nil and isTeam(plr) == false and plr.Character:FindFirstChild("Head") ~= nil and plr.Character:FindFirstChild("Torso") ~= nil then
+            if getgenv().Visibility == true and plr ~= Player and plr.Character ~= nil and isAlive(plr) and isTeam(plr) == false and plr.Character:FindFirstChild("Head") ~= nil and plr.Character:FindFirstChild("Torso") ~= nil then
                 local Distance = (Camera.CFrame.Position - plr.Character.Torso.Position).Magnitude
                 local Vector, OnScreen = Camera:WorldToScreenPoint(plr.Character.Head.Position)
 
@@ -96,8 +106,8 @@ local function DrawESP(plr)
                 else
                     Name.Visible = false
                 end
-
-                Name.Text = string.format(plr.Name.." ["..tostring(math.floor(Distance*0.28)).."m]")
+                local health,_ = GetHealth(plr)
+                Name.Text = tostring(plr.Name.." ["..math.floor(Distance*0.28).."m] "..math.round(health).."%")
 
                 local PartCorners = GetPartCorners(plr.Character.Torso)
                 local VectorTR, OnScreenTR = Camera:WorldToScreenPoint(PartCorners.TR)
