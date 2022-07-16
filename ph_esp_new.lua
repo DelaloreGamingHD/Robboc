@@ -6,24 +6,7 @@ local Camera = game:GetService("Workspace").CurrentCamera
 local UserInputService = game:GetService("UserInputService")
 
 
-
-if not getgenv().useTeamColor then
-    getgenv().useTeamColor = false
-    getgenv().TeamCheck = true
-end
-
 local FontValue = 1
-if not getgenv().Visibility then
-    getgenv().Visibility = true
-end
-
-if not getgenv().cham or not getgenv().nameESP or not getgenv().boxESP or not getgenv().TeamCheck then
-    getgenv().cham = false
-    getgenv().nameESP = false
-    getgenv().boxESP = false
-end
-
-
 
 if game.PlaceId == 292439477 then
     for _, v in next, getgc(true) do
@@ -50,7 +33,7 @@ end
 
 
 
-local function CycleFont()
+getgenv().changeFont = function CycleFont()
     if FontValue + 1 > 3 then
         FontValue = 1
     else
