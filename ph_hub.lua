@@ -31,7 +31,7 @@ end
 
 getgenv().aimbotLoaded = false
 aimbotTab:AddButton({
-	Name = "Initialize Aimbot",
+	Name = "Load Aimbot",
 	Callback = function()
             if getgenv().aimbotLoaded == false then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/ph_aimbot_new.lua", true))()
@@ -177,7 +177,7 @@ aimbotTab2:AddSlider({
 
 getgenv().esp_loaded = false
 Tab:AddButton({
-	Name = "Initialize ESP!",
+	Name = "Load ESP!",
 	Callback = function()
             if getgenv().esp_loaded == false then
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/ph_esp_new.lua", true))()
@@ -273,6 +273,5 @@ local destroygui = Tab:AddButton({
         })
     end    
 })
-
 
 OrionLib:Init()
