@@ -151,7 +151,7 @@ aimbotTab2:AddToggle({
 
 aimbotTab2:AddDropdown({
 	Name = "Prediction Method",
-	Default = "Simple",
+	Default = "Advanced",
 	Options = {"Simple", "Advanced"},
 	Callback = function(Value)
 		getgenv().predictionMethod = Value
