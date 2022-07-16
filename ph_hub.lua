@@ -1,7 +1,7 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 local Window = OrionLib:MakeWindow({Name = "{skatbr} Phantom Forces-Empire", HidePremium = false, SaveConfig = false, ConfigFolder = "OrionPH"})
-
+local SLIDER
 local aimbotTab = Window:MakeTab({
 	Name = "Aimbot",
 	Icon = "rbxassetid://4483345998",
@@ -41,6 +41,29 @@ aimbotTab:AddButton({
       		elseif getgenv().aimbotLoaded == true then
                 SendNote("Aimbot is already Loaded!")
             end
+  	end    
+})
+
+aimbotTab:AddButton({
+	Name = "Use recommended sensitivity",
+	Callback = function()
+        SLIDER:Set(1)
+        getgenv().aim_smooth = 1
+        if not getgenv().useRC then
+            getgenv().useRC = true
+            local userInputService = game:GetService("UserInputService")
+            local UserGameSettings = UserSettings():GetService("UserGameSettings")
+
+            local number = 0.2
+
+            local mouseDeltaSensitivity = number  / UserGameSettings.MouseSensitivity 
+            userInputService.MouseDeltaSensitivity = mouseDeltaSensitivity
+
+            UserGameSettings:GetPropertyChangedSignal("MouseSensitivity"):Connect(function()
+                mouseDeltaSensitivity = number  / UserGameSettings.MouseSensitivity 
+                userInputService.MouseDeltaSensitivity = mouseDeltaSensitivity
+            end)
+        end
   	end    
 })
 
@@ -86,7 +109,7 @@ aimbotTab:AddSlider({
 })
 
 
-aimbotTab:AddSlider({
+SLIDER = aimbotTab:AddSlider({
 	Name = "Aim Smoothness",
 	Min = 0,
 	Max = 20,
@@ -145,7 +168,7 @@ aimbotTab2:AddToggle({
 	Default = true,
 	Callback = function(Value)
         getgenv().predict = Value
-        SendNote("Recommended that you set aim smoothness to 1 & your camera senv to 0.2",5)
+        SendNote("Recommend that you set aim smoothness to 1 & your camera senv to 0.2",10)
 	end    
 })
 
@@ -156,7 +179,7 @@ aimbotTab2:AddDropdown({
 	Callback = function(Value)
 		getgenv().predictionMethod = Value
 		if Value == "Advanced" then
-			SendNote("Prediction time won't be used!")
+			SendNote("Prediction time won't be used!",5)
 		end
 	end
 })
