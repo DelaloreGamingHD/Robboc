@@ -83,8 +83,7 @@ end
 local function predictPosition(part, timeInterval)
     if getgenv().aimbotPrediction == false or modules.gamelogic.currentgun.data == nil then
         return part.Position
-    end
-    if getgenv().predictionMethod == "Advanced" then
+    elseif getgenv().predictionMethod == "Advanced" then
         local currentGun = modules.gamelogic.currentgun;
         local currentgunBulletSpeed = currentGun.data.bulletspeed
         local _, travelTime = modules.physics.trajectory(currentGun.barrel.Position, modules.values.bulletAcceleration, part.Position, currentgunBulletSpeed)
