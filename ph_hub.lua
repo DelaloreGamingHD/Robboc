@@ -122,20 +122,6 @@ SLIDER = aimbotTab:AddSlider({
 	end    
 })
 
-aimbotTab:AddSlider({
-	Name = "Fov",
-	Min = 0,
-	Max = 800,
-	Default = 400,
-	Color = Color3.fromRGB(115, 0, 255),
-	Increment = 1,
-	ValueName = "",
-	Callback = function(Value)
-        getgenv().fov = Value
-		fovcircle.Radius = Value
-	end    
-})
-
 
 aimbotTab:AddToggle({
 	Name = "Show Fov",
