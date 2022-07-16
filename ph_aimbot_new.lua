@@ -37,17 +37,7 @@ end
 
 
 
-if not getgenv().aim_smooth then
-    getgenv().aim_smooth = 2
-end
 
-if not getgenv().aim_at then
-    getgenv().aim_at = "head"
-end
-
-if not getgenv().fov then
-    getgenv().fov = 400
-end
 
 local aimParts = {"head","torso"}
 local function randomAimPart(table)
@@ -60,9 +50,7 @@ local Rayparams = RaycastParams.new();
 Rayparams.FilterType = Enum.RaycastFilterType.Blacklist;
 
 
-if not getgenv().visibleCheck then
-    getgenv().visibleCheck = true
-end
+
 local function CheckRay(from,to)
     if getgenv().visibleCheck == false then
         return true
@@ -76,12 +64,6 @@ local function CheckRay(from,to)
         pass = false
     end
     return pass
-end
-
-
-if not getgenv().aimbotPrediction or not getgenv().predictionTime then
-    getgenv().aimbotPrediction = true
-    getgenv().predictionTime = 0.1
 end
 
 local function predictPosition(part, timeInterval)
