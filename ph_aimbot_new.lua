@@ -135,7 +135,7 @@ end)
 rs.RenderStepped:connect(function()
     if not client.Character.HumanoidRootPart or not isAiming then return end
     local t = closestPlayer(getgenv().fov)
-    
+
     if t and getgenv().aim_at ~= "Random" then
         local aimPos = predictPosition(getbody.getbodyparts(t)[getgenv().aim_at],getgenv().predictionTime)
         aimAt(aimPos, getgenv().aim_smooth)
