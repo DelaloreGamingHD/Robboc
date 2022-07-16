@@ -76,10 +76,16 @@ local function DrawESP(plr)
         local c
         c = game:GetService("RunService").RenderStepped:Connect(function()
             if getgenv().Visibility == true and plr ~= Player and plr.Character ~= nil and GetHealth(plr) > 0 and isTeam(plr) == false and plr.Character:FindFirstChild("Head") ~= nil and plr.Character:FindFirstChild("Torso") ~= nil then
+                if modules.hud:isplayeralive(plr) == false then
+                    Box.Visible = false
+                    Name.Visible = false
+                    highlight.Enabled = false
+                    return
+                end
+                
                 local Distance = (Camera.CFrame.Position - plr.Character.Torso.Position).Magnitude
                 local Vector, OnScreen = Camera:WorldToScreenPoint(plr.Character.Head.Position)
-
-
+                
                 highlight.Adornee = plr.Character
                 highlight.Enabled = getgenv().cham
                 if getgenv().useTeamColor then
@@ -135,6 +141,8 @@ local function DrawESP(plr)
                 Name.Visible = false
                 highlight.Enabled = false
                 if game.Players:FindFirstChild(plr.Name) == nil then
+                    Box:Remove()
+                    Name:Remove()
                     c:Disconnect()
                 end
             end
