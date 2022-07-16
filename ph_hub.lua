@@ -1,231 +1,278 @@
-local windows = loadstring(game:HttpGet("https://raw.githubusercontent.com/ZepsyyCodesLUA/Synapse-Library-OBFUSCATED-/main/Source.lua"))()
-local win = windows:Create({
-    Title = "22 hub",
-    Game = "Phantom Forces!"
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({Name = "{skatbr} Phantom Forces-Empire", HidePremium = false, SaveConfig = false, ConfigFolder = "OrionPH"})
+
+local aimbotTab = Window:MakeTab({
+	Name = "Aimbot",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
 })
 
-local tab = win:NewTab({
-    Title = "Main"
+local aimbotTab2 = Window:MakeTab({
+	Name = "More Aimbot",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
 })
 
-tab:Label({
-    Title = "Welcome!"
+local Tab = Window:MakeTab({
+	Name = "Visual",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
 })
 
-getgenv().aimbot_loaded = false
-tab:Button({
-    Title = "Load Aimbot",
-    Callback = function()
-        if not getgenv().aimbot_loaded then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/PH_AIMBOT.lua", true))()
-            getgenv().aimbot_loaded = true
-        end
-        
-    end
+function SendNote(message : string, time)
+    OrionLib:MakeNotification({
+        Name = "Hub",
+        Content = message,
+        Image = "rbxassetid://4483345998",
+        Time = time or 3
+    })
+end
+
+getgenv().aimbotLoaded = false
+aimbotTab:AddButton({
+	Name = "Initialize Aimbot",
+	Callback = function()
+            if getgenv().aimbotLoaded == false then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/ph_aimbot_new.lua", true))()
+                getgenv().aimbotLoaded = true
+                SendNote("Aimbot Loaded!")
+            
+      		elseif getgenv().aimbotLoaded == true then
+                SendNote("Aimbot is already Loaded!")
+            end
+  	end    
 })
 
-getgenv().esp_loaded = false
-tab:Button({
-    Title = "Load ESP",
-    Callback = function()
-        if not getgenv().esp_loaded then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Phantom_%20Forces_ESP.lua", true))()
-            getgenv().esp_loaded = true
-        end
-    end
+
+aimbotTab:AddToggle({
+	Name = "Visible check",
+	Default = false,
+	Callback = function(Value)
+		getgenv().visibleCheck = Value
+	end
 })
 
-tab:TextBox({
-    Title = "ESP Info",
-    PlaceHolder = "5 to enable/disable ESP,4 to change text size",
 
-    Callback = function(args)
-        print(args)
-    end
-})
 
-tab:DropDown({
-    Text = "Aimlock Method",
-    PlaceHolder = 'Choose An Aim Method...',
-    Options = {'head', "torso","random"},
-    Callback = function(args)
-        if args == "random" then
-            getgenv().random_aim = true
-        else
-            getgenv().random_aim = false
-            getgenv().aim_at = args
-        end
-    end
-})
-
-getgenv().fov_Visible = false
-getgenv().fov = 400
 local fovcircle = Drawing.new("Circle")
-fovcircle.Visible = getgenv().fov_Visible
-fovcircle.Radius = getgenv().fov
-fovcircle.Color = Color3.fromRGB(0, 255, 136)
-fovcircle.Thickness = 1
+fovcircle.Radius = getgenv().fov or 400
+fovcircle.Color = Color3.fromRGB(255, 0, 132)
+fovcircle.Thickness = 1.5
 fovcircle.Filled = false
-fovcircle.Transparency = 0.3
+fovcircle.Transparency = 1
 fovcircle.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2)
 
-tab:Slider({
-    Title = "Smoothing",
-    MinValue = 1,
-    Def = 2,
-    MaxValue = 25,
-    callback = function(args)
-        getgenv().aim_smooth = args
-    end
-})
+local mouse = game:GetService("Players").LocalPlayer:GetMouse()
+local guiservice = game:GetService("GuiService")
 
-
-tab:Toggle({
-    Title = "Show fov",
-    Description = "Draw Circle",
-    Callback = function(args)
-        getgenv().fov_Visible = args
-        fovcircle.Visible = getgenv().fov_Visible
-    end
-})
-
-tab:Slider({
-    Title = "Fov",
-    MinValue = 1,
-    Def = 400,
-    MaxValue = 800,
-    callback = function(args)
-        getgenv().fov = args
-        fovcircle.Radius = getgenv().fov
-    end
-})
-
-
-
-local tab = win:NewTab({
-    Title = "TriggerBot"
-})
-
-getgenv().TriggerBot_loaded = false
-tab:Toggle({
-    Title = "Enable TriggerBot",
-    Description = "Automatically shoots when cursor is placed over an enemy.",
-    Callback = function(args)
-        if not getgenv().TriggerBot_loaded then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Phantom_%20Forces_TRIGGERBOT.lua", true))()
-        end
-        getgenv().triggerBot = args
-    end
-})
-
-tab:Toggle({
-    Title = "Head only",
-    Description = "Shoot only if you aim at the head.",
-    Callback = function(args)
-        getgenv().head_check = args
-    end
-})
-
-tab:Slider({
-    Title = "releasetime",
-    MinValue = 0,
-    Def = 0,
-    MaxValue = 6,
-    callback = function(args)
-        getgenv().releasetime = args
-    end
-})
-
-tab:Slider({
-    Title = "Reaction time",
-    MinValue = 0,
-    Def = 0,
-    MaxValue = 4,
-    callback = function(args)
-        getgenv().reaction_time = args
-    end
-})
-
-
-local tab = win:NewTab({
-    Title = "Unsafe"
-})
-if not getgenv().head_size then
-    getgenv().head_size = 2
-end
-getgenv().exp = "Torso"
-getgenv().doRandom = false
-local parts = {"Head", "Torso"}
-spawn(function()
-    while true do 
-        if getgenv().doRandom == true then
-            getgenv().exp =  parts[math.random(1, #parts)]
-        end
-        wait(0.3)
-    end
+game:GetService("RunService").RenderStepped:Connect(function()
+    fovcircle.Position = Vector2.new(mouse.X, mouse.Y + (guiservice.GetGuiInset(guiservice).Y))
 end)
 
 
+aimbotTab:AddSlider({
+	Name = "Fov",
+	Min = 0,
+	Max = 800,
+	Default = 400,
+	Color = Color3.fromRGB(0, 255, 166),
+	Increment = 1,
+	ValueName = "",
+	Callback = function(Value)
+        getgenv().fov = Value
+		fovcircle.Radius = Value
+	end    
+})
 
-function hitbox2x()
-    local players = game:GetService("Workspace").Players
 
-    local OldIndex = nil
+aimbotTab:AddSlider({
+	Name = "Aim Smoothness",
+	Min = 0,
+	Max = 20,
+	Default = 3,
+	Color = Color3.fromRGB(0, 255, 55),
+	Increment = 1,
+	ValueName = "",
+	Callback = function(Value)
+		getgenv().aim_smooth = Value
+	end    
+})
 
-    OldIndex =
-        hookmetamethod(
-        players,
-        "__index",
-        function(Self, Key)
-            if not checkcaller() and getgenv().expandHitbox then
-                
-                if not checkcaller() and tostring(Self) == getgenv().exp and Key == "Size" then
-                    return Vector3.new(getgenv().head_size, getgenv().head_size, getgenv().head_size)
-                end
+aimbotTab:AddSlider({
+	Name = "Fov",
+	Min = 0,
+	Max = 800,
+	Default = 400,
+	Color = Color3.fromRGB(115, 0, 255),
+	Increment = 1,
+	ValueName = "",
+	Callback = function(Value)
+        getgenv().fov = Value
+		fovcircle.Radius = Value
+	end    
+})
+
+
+aimbotTab:AddToggle({
+	Name = "Show Fov",
+	Default = true,
+	Callback = function(Value)
+		fovcircle.Visible = Value
+	end
+})
+
+aimbotTab:AddColorpicker({
+	Name = "Colorpicker",
+	Default = Color3.fromRGB(255, 0, 132),
+	Callback = function(Value)
+		fovcircle.Color = Value
+	end	  
+})
+
+
+aimbotTab:AddDropdown({
+	Name = "Aimlock Method",
+	Default = "head",
+	Options = {"head", "torso","Random"},
+	Callback = function(Value)
+		getgenv().aim_at = Value
+	end    
+})
+
+aimbotTab2:AddToggle({
+	Name = "Aimbot Prediction",
+	Default = true,
+	Callback = function(Value)
+        getgenv().predict = Value
+        SendNote("Recommended that you set aim smoothness to 1 & your camera senv to 0.2",5)
+	end    
+})
+
+aimbotTab2:AddDropdown({
+	Name = "Prediction Method",
+	Default = "Simple",
+	Options = {"Simple", "Advanced"},
+	Callback = function(Value)
+		getgenv().predictionMethod = Value
+		if Value == "Advanced" then
+			SendNote("Prediction time won't be used!")
+		end
+	end
+})
+aimbotTab2:AddSlider({
+	Name = "Prediction time",
+	Min = 0.01,
+	Max = 4,
+	Default = 0.1,
+	Color = Color3.fromRGB(255, 0, 60),
+	Increment = 0.01,
+	ValueName = "sec",
+	Callback = function(Value)
+		getgenv().predictionTime = Value
+	end    
+})
+
+
+
+getgenv().esp_loaded = false
+Tab:AddButton({
+	Name = "Initialize ESP!",
+	Callback = function()
+            if getgenv().esp_loaded == false then
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/ph_esp_new.lua", true))()
+                getgenv().esp_loaded = true
+                SendNote("ESP Loaded!")
+            
+      		elseif getgenv().esp_loaded == true then
+                SendNote("ESP is already Loaded!")
             end
+  	end    
+})
 
-            return OldIndex(Self, Key)
+
+Tab:AddToggle({
+	Name = "Visual",
+	Default = true,
+	Callback = function(Value)
+		getgenv().Visibility = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Box ESP",
+	Default = true,
+	Callback = function(Value)
+		getgenv().boxESP = Value
+	end    
+})
+
+
+Tab:AddToggle({
+	Name = "Name",
+	Default = true,
+	Callback = function(Value)
+		getgenv().nameESP = Value
+	end    
+})
+
+
+Tab:AddSlider({
+	Name = "Font",
+	Min = 0,
+	Max = 3,
+	Default = 1,
+	Color = Color3.fromRGB(174, 0, 255),
+	Increment = 1,
+	ValueName = "",
+	Callback = function(Value)
+        getgenv().FontValue = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Highlight",
+	Default = false,
+	Callback = function(Value)
+		getgenv().cham = Value
+	end    
+})
+
+Tab:AddToggle({
+    Name = "Team check",
+    Default = true,
+    Callback = function(Value)
+        getgenv().TeamCheck = Value
+    end
+})
+
+
+Tab:AddToggle({
+        Name = "Use Team-Color",
+        Default = false,
+        Callback = function(Value)
+			getgenv().useTeamColor = Value
         end
-    )
-end
+})
 
 
+local orionion = game:GetService("CoreGui"):FindFirstChild("Orion")
 
-tab:DropDown({
-    Text = "Hitbox",
-    PlaceHolder = 'Choose An Part...',
-    Options = {'Head', "Torso", "Random"},
-    Callback = function(args)
-        if args ~= "Random" then
-            getgenv().exp = args
-            getgenv().doRandom = false
-        end
-        if args == "Random" then
-            getgenv().doRandom = true
-        end
+local destroygui = Tab:AddButton({
+    Name = "Destroy GUI",
+    Callback = function()
+        orionion:Destroy()
+        OrionLib:Destroy()
         
-    end
+        wait(1)
+        
+        OrionLib:MakeNotification({
+            Name = "Removing GUI...",
+            Content = "GUI is removed!",
+            Time = 3
+        })
+    end    
 })
 
 
-
-tab:Slider({
-    Title = "Hitbox Size",
-    MinValue = 1,
-    Def = 2,
-    MaxValue = 5,
-    callback = function(args)
-        getgenv().head_size = args
-    end
-})
-
-tab:Toggle({
-    Title = "Enable",
-    Description = "Hitbox becomes bigger!",
-    Callback = function(args)
-        if not getgenv().expandHitbox then
-            hitbox2x()
-        end
-        getgenv().expandHitbox = args
-    end
-})
+OrionLib:Init()
