@@ -1,4 +1,5 @@
 assert(mousemoverel, "missing dependency: mousemoverel")
+assert(getgc, "missing dependency: getgc");
 
 if not game.Loaded then game.Loaded:Wait() end
 
@@ -8,10 +9,25 @@ local mouse = client:GetMouse()
 local players = game:GetService("Players")
 local rs = game:GetService("RunService")
 local uis = game:GetService("UserInputService")
-
+local replicatedfirst = game:GetService("ReplicatedFirst");
 if not mousemoverel or not getgenv or not getgc then
     client:Kick("Your exploit is not supported")
 end
+
+local modules = {};
+modules.values = require(replicatedfirst.SharedModules.SharedConfigs.PublicSettings);
+modules.network = require(replicatedfirst.ClientModules.Old.framework.network);
+modules.physics = require(replicatedfirst.SharedModules.Old.Utilities.Math.physics:Clone());
+
+for _, v in next, getgc(true) do
+    if type(v) == "table" then
+        if rawget(v, "gammo") then
+            modules.gamelogic = v;
+        end
+    end
+end
+
+
 
 for _, v in pairs(getgc(true)) do
     if type(v) == "table" and type(rawget(v, 'getbodyparts')) == 'function' then
@@ -34,8 +50,6 @@ for _, v in pairs(getgc(true)) do
         end
     end
 end
-
-
 
 
 
@@ -70,7 +84,13 @@ local function predictPosition(part, timeInterval)
     if getgenv().aimbotPrediction == false then
         return part.Position
     end
-    return part.Position + part.Velocity * timeInterval
+    if getgenv().predictionMethod == "Advanced" then
+        local currentGun = modules.gamelogic.currentgun;
+        local currentgunBulletSpeed = currentGun.data.bulletspeed
+        local _, travelTime = modules.physics.trajectory(currentGun.barrel.Position, modules.values.bulletAcceleration, part.Position, currentgunBulletSpeed)
+        return part.position + part.Velocity * travelTime;
+    end
+    return part.position + part.Velocity * timeInterval;
 end
 
 
@@ -113,16 +133,19 @@ uis.InputEnded:Connect(function(input)
 end)
 
 rs.RenderStepped:connect(function()
-    if not client.Character or not isAiming then return end
+    if not client.Character.HumanoidRootPart or not isAiming then return end
     local t = closestPlayer(getgenv().fov)
-
+    
     if t and getgenv().aim_at ~= "Random" then
-        aimAt(predictPosition(getbody.getbodyparts(t)[getgenv().aim_at],getgenv().predictionTime), getgenv().aim_smooth)
+        local aimPos = predictPosition(getbody.getbodyparts(t)[getgenv().aim_at],getgenv().predictionTime)
+        aimAt(aimPos, getgenv().aim_smooth)
 
     elseif t and getgenv().aim_at == "Random" then
-        aimAt(predictPosition(getbody.getbodyparts(t)[randomAimPart(aimParts)],getgenv().predictionTime), getgenv().aim_smooth)
+        local aimPos = predictPosition(getbody.getbodyparts(t)[randomAimPart(aimParts)],getgenv().predictionTime)
+        aimAt(aimPos, getgenv().aim_smooth)
     end
 end)
+
 
 
 --- Calculate velocity
