@@ -34,10 +34,8 @@ end
 
 
 local function GetHealth(plr : Player)
-    return modules.hud:getplayerhealth(plr)
-end
-local function isAlive(plr : Player)
-    return modules.hud:isplayeralive(plr)
+    local health,_ = modules.hud:getplayerhealth(plr)
+    return health
 end
 
 local function isTeam(plr)
@@ -77,7 +75,7 @@ local function DrawESP(plr)
     local function Update()
         local c
         c = game:GetService("RunService").RenderStepped:Connect(function()
-            if getgenv().Visibility == true and plr ~= Player and plr.Character ~= nil and isAlive(plr) and isTeam(plr) == false and plr.Character:FindFirstChild("Head") ~= nil and plr.Character:FindFirstChild("Torso") ~= nil then
+            if getgenv().Visibility == true and plr ~= Player and plr.Character ~= nil and GetHealth(plr) > 0 and isTeam(plr) == false and plr.Character:FindFirstChild("Head") ~= nil and plr.Character:FindFirstChild("Torso") ~= nil then
                 local Distance = (Camera.CFrame.Position - plr.Character.Torso.Position).Magnitude
                 local Vector, OnScreen = Camera:WorldToScreenPoint(plr.Character.Head.Position)
 
@@ -106,7 +104,7 @@ local function DrawESP(plr)
                 else
                     Name.Visible = false
                 end
-                local health,_ = GetHealth(plr)
+                local health = GetHealth(plr)
                 Name.Text = tostring(plr.Name.." ["..math.floor(Distance*0.28).."m] "..math.round(health).."%")
 
                 local PartCorners = GetPartCorners(plr.Character.Torso)
