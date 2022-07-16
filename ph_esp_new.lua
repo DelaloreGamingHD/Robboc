@@ -5,9 +5,6 @@ local Player = game:GetService("Players").LocalPlayer
 local Camera = game:GetService("Workspace").CurrentCamera
 local UserInputService = game:GetService("UserInputService")
 
-
-local FontValue = 1
-
 if game.PlaceId == 292439477 then
     for _, v in next, getgc(true) do
         if type(v) == "table" then
@@ -31,15 +28,6 @@ if game.PlaceId == 292439477 then
     end)
 end
 
-
-
-getgenv().changeFont = function CycleFont()
-    if FontValue + 1 > 3 then
-        FontValue = 1
-    else
-        FontValue = FontValue + 1
-    end
-end
 
 
 local function isTeam(plr)
@@ -103,7 +91,7 @@ local function DrawESP(plr)
                         Name.Color = Color3.fromHSV(math.clamp(Distance / 5, 0, 125) / 255, 0.75, 1)
                     end
                     Name.Visible = true
-                    Name.Font = FontValue
+                    Name.Font = getgenv().FontValue
                     Name.Transparency = math.clamp((500 - Distance) / 200, 0.2, 1)
                 else
                     Name.Visible = false
