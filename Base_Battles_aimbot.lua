@@ -7,16 +7,16 @@ local uis = game:GetService("UserInputService")
 
 
 
-if not getgenv().aim_smooth then
+if getgenv().aim_smooth == nil then
     getgenv().aim_smooth = 2
     getgenv().fov = 400
 end
 
-if not getgenv().aim_at then
+if getgenv().aim_at == nil then
     getgenv().aim_at = "Head"
 end
 
-if not getgenv().FontValue then
+if getgenv().FontValue == nil then
     local teams
     for key, value in pairs(getgc(true)) do
         if type(value) == "function" and debug.getinfo(value).name =="sortTeamList" then
@@ -46,18 +46,16 @@ local Rayparams = RaycastParams.new();
 Rayparams.FilterType = Enum.RaycastFilterType.Blacklist;
 
 
-
-local function CheckRay(pos, part)
-    local params = RaycastParams.new()
-    params.FilterDescendantsInstances = {client.Character, part.Parent}
-    params.FilterType = Enum.RaycastFilterType.Blacklist
-    local Result = workspace:Raycast(client.Character.HumanoidRootPart.Position, (pos - client.Character.HumanoidRootPart.Position).unit * (pos - client.Character.HumanoidRootPart.Position).magnitude, params)
-    if Result ~= nil then
-        return false
-    end
-    return true
+if getgenv().visibleCheck == nil then
+    getgenv().visibleCheck = true
 end
+local function isVisible(p,...)
+    if getgenv().visibleCheck == false then
+        return true
+    end
 
+    return #camera:GetPartsObscuringTarget({p}, {camera, client.Character,...}) == 0
+end
 
 
 
@@ -74,7 +72,7 @@ local function closestPlayer(fov)
                 local mousePos = camera:WorldToViewportPoint(mouse.Hit.p)
                 local dist = (Vector2.new(mousePos.X, mousePos.Y) - Vector2.new(targetPos.X, targetPos.Y)).magnitude
                 Rayparams.FilterDescendantsInstances = {client.Character}
-                if dist < closest and CheckRay(character.HumanoidRootPart.Position,character.HumanoidRootPart) then
+                if dist < closest and isVisible(character.Head.Position, character) then
                     closest = dist
                     target = v
                 end
@@ -119,7 +117,7 @@ end)
 rs.RenderStepped:connect(function()
     local t = closestPlayer(getgenv().fov)
     
-    if isAiming and t and CheckRay(t.Character.HumanoidRootPart.Position,t.Character.HumanoidRootPart)then
+    if isAiming and t then
         aimAt(t.Character[getgenv().aim_at].Position,getgenv().aim_smooth)
     end
 end)
