@@ -7,6 +7,7 @@ local w = library:CreateWindow("Base Battles")
 
 local b = w:CreateFolder("Gun")
 local aimBot = w:CreateFolder("Aimbot")
+local Misc = w:CreateFolder("Misc")
 
 local player = game:GetService("Players").LocalPlayer
 
@@ -46,7 +47,7 @@ b:Button(
 b:Button(
     "HitBox dm-No idea#7972-",
     function()
-        print("Hit Box is gone!")
+        print("Hit Box is gone! No idea#7972")
     end
 )
 --Make all guns automatic
@@ -81,7 +82,7 @@ aimBot:Toggle(
         if shared.toggle then
             game:GetService("RunService").RenderStepped:Connect(
                 function()
-                    if mouse.Target.Parent:FindFirstChild("Humanoid") and mouse.Target.Parent.Name ~= player.Name then
+                    if shared.toggle and (mouse.Target.Parent:FindFirstChild("Humanoid") or mouse.Target.Parent:FindFirstChild("Head")) and mouse.Target.Parent.Name ~= player.Name then
                         local target = game:GetService("Players"):FindFirstChild(mouse.Target.Parent.Name)
                         if shared.toggle then
                             mouse1press()
@@ -95,18 +96,109 @@ aimBot:Toggle(
     end
 )
 
-b:Button("ESP", function()
-    if not getgenv().FontValue then
+Misc:Button("Load ESP", function()
+    if getgenv().FontValue == nil then
         loadstring(game:HttpGet(('https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Base%20Battles-ESP.lua')))()
+    end
+end)
+
+Misc:Bind(
+    "ESP ON/OFf",
+    Enum.KeyCode.H,
+    function()
+        if getgenv().FontValue ~= nil then
+            getgenv().Visibility = not getgenv().Visibility
+        end
+    end
+)
+
+Misc:Toggle("Box esp",function(bool)
+    if getgenv().FontValue ~= nil then
+        getgenv().boxVis = bool
     end
 end)
 
 
 
+Misc:Button("[Shift-hold] speed & Jump", function()
+    if getgenv().lll == nil then
+        getgenv().lll = true
+        local Players = game:GetService("Players")
+        if not hookmetamethod then
+            Players.LocalPlayer:Kick("Your exploit is not supported")
+        end
+        local OldNameCall
+        OldNameCall = hookmetamethod(game, "__newindex", function(Self, Index, ...)
+            if not checkcaller()  and (Index == "WalkSpeed" or Index == "JumpPower") then
+                return
+            end
+            return OldNameCall(Self, Index, ...)
+        end)
+
+        local UIS = game:GetService("UserInputService")
+        local Player = Players.LocalPlayer
+        local DefaultWalkspeed = Player.Character.Humanoid.WalkSpeed
+        local DefaultJumpPower = Player.Character.Humanoid.jumpPower
+        if DefaultWalkspeed == 0 then
+            DefaultWalkspeed = 22
+            DefaultJumpPower = 50
+        end
+        if getgenv().walkSpeed == nil or getgenv().jumpPower == nil then
+            getgenv().jumpPower = 250
+            getgenv().walkSpeed = 250
+        end
+        UIS.InputBegan:Connect(
+            function(input)
+                if input.KeyCode == Enum.KeyCode.LeftShift then
+                    Player.Character.Humanoid.WalkSpeed = getgenv().walkSpeed
+                    Player.Character.Humanoid.JumpPower = getgenv().jumpPower
+                end
+            end
+        )
+
+        UIS.InputEnded:Connect(
+            function(input)
+                if input.KeyCode == Enum.KeyCode.LeftShift then
+                    Player.Character.Humanoid.WalkSpeed = DefaultWalkspeed
+                    Player.Character.Humanoid.JumpPower = DefaultJumpPower
+                end
+            end
+        )
+    end
+end)
+
+
+Misc:Slider("Walk speed",{
+    min = 22; -- min value of the slider
+    max = 500; -- max value of the slider
+    precise = true; -- max 2 decimals
+},function(value)
+    getgenv().walkSpeed = value
+end)
+
+
+Misc:Slider("Jump Power",{
+    min = 50; -- min value of the slider
+    max = 500; -- max value of the slider
+    precise = true; -- max 2 decimals
+},function(value)
+    getgenv().jumpPower = value
+end)
+
+
+
 aimBot:Button(
-    "Aimbot",
+    "Load Aimbot",
     function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Base_Battles_aimbot.lua", true))()
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "Waring aimbot!";
+            Text = "For the aimbot to work correctly set your camera sensitivity to [0.2]";
+            Duration = 20;
+            })
+        if getgenv().Loaded == nil then
+            getgenv().Loaded = true
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/skatbr/Roblox-Releases/main/Base_Battles_aimbot.lua", true))()
+        end
     end
 )
 
@@ -131,11 +223,17 @@ aimBot:Dropdown("Aimlock Method",{'Head', "UpperTorso"},true,function(mob) --tru
     getgenv().aim_at = mob
 end)
 
+getgenv().visibleCheck = false
+aimBot:Toggle("Visible Check!",function(bool)
+    getgenv().visibleCheck = bool
+end)
+
 
 aimBot:Toggle("Show fov",function(bool)
     getgenv().fov_Visible = bool
     fovcircle.Visible = getgenv().fov_Visible
 end)
+
 
 
 aimBot:ColorPicker("Fov Color",Color3.fromRGB(0, 255, 136),function(color) --Default color
