@@ -40,6 +40,10 @@ getgenv().useTeamColor = true
 getgenv().FontValue = 1
 getgenv().Visibility = true
 
+if getgenv().boxVis == nil then
+    getgenv().boxVis = false
+end
+
 local function CycleFont()
     if getgenv().FontValue + 1 > 3 then
         getgenv().FontValue = 1
@@ -77,6 +81,7 @@ local function DrawESP(plr)
     local function Update()
         local c
         c = game:GetService("RunService").RenderStepped:Connect(function()
+            task.wait()
             if plr.Character ~= nil and plr.Character:FindFirstChildOfClass("Humanoid") ~= nil and plr.Character:FindFirstChild("HumanoidRootPart") ~= nil and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 and plr.Character:FindFirstChild("Head") ~= nil then
                 local Distance = (Camera.CFrame.Position - plr.Character.HumanoidRootPart.Position).Magnitude
                 local Vector, OnScreen = Camera:WorldToScreenPoint(plr.Character.Head.Position)
@@ -110,7 +115,7 @@ local function DrawESP(plr)
                 local VectorTL, OnScreenTL = Camera:WorldToScreenPoint(PartCorners.TL)
                 local VectorBL, OnScreenBL = Camera:WorldToScreenPoint(PartCorners.BL)
 
-                if (OnScreenBL or OnScreenTL or OnScreenBR or OnScreenTR) and getgenv().Visibility then
+                if (OnScreenBL or OnScreenTL or OnScreenBR or OnScreenTR) and getgenv().Visibility and getgenv().boxVis then
                     Box.PointA = Vector2.new(VectorTR.X, VectorTR.Y + 36)
                     Box.PointB = Vector2.new(VectorTL.X, VectorTL.Y + 36)
                     Box.PointC = Vector2.new(VectorBL.X, VectorBL.Y + 36)
