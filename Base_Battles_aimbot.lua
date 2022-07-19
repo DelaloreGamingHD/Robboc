@@ -5,6 +5,33 @@ local players = game:GetService("Players")
 local rs = game:GetService("RunService")
 local uis = game:GetService("UserInputService")
 
+local function hitbox()
+    local Players = game:GetService("Players")
+    local OldNewIndex
+    local parent = game.Parent
+    getgenv().HeadSize = 50
+    OldNewIndex = hookmetamethod(game, "__newindex", function(Self, Index, ...)
+        if not checkcaller() and tostring(Self) == "Head" and tostring(Index) == "Size" and Self ~= Players.LocalPlayer.Character.Head then
+            return Vector3.new(getgenv().HeadSize,getgenv().HeadSize,getgenv().HeadSize)
+        end
+        return OldNewIndex(Self, Index, ...)
+    end)
+
+
+
+    local OldIndex
+    OldIndex = hookmetamethod(game, "__index", function(Self, Index)
+        if tostring(Self) == "OriginalSize" and tostring(Index) == "Value" and tostring(Self.parent) == "Head" and Self.parent ~= Players.LocalPlayer.Character.Head then
+            return Vector3.new(getgenv().HeadSize,getgenv().HeadSize,getgenv().HeadSize)
+        end
+        if tostring(Self) == "Head" and tostring(Index) == "Size" and Self ~= Players.LocalPlayer.Character.Head then
+            return Vector3.new(getgenv().HeadSize,getgenv().HeadSize,getgenv().HeadSize)
+        end
+        return OldIndex(Self, Index)
+    end)
+end
+
+hitbox()
 
 
 if getgenv().aim_smooth == nil then
