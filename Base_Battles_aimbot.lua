@@ -29,6 +29,12 @@ local function hitbox()
         end
         return OldIndex(Self, Index)
     end)
+
+    for _, value in pairs(Players:GetPlayers()) do
+        if value.Character and value.Character:FindFirstChild("Head") then
+            print(value.Character.Head.Size)
+        end
+    end
 end
 
 hitbox()
