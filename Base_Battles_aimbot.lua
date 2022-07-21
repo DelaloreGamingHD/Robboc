@@ -5,6 +5,17 @@ local players = game:GetService("Players")
 local rs = game:GetService("RunService")
 local uis = game:GetService("UserInputService")
 
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
+    Text = "Recommend that you set your camera sensitivity to [0.2]"; --chat notification
+    Font = Enum.Font.SourceSansBold; --font changeable
+    FontSize = Enum.FontSize.Size24; --font size changeable
+})
+
+
+
+
+
+
 local function hitbox()
     local Players = game:GetService("Players")
     local OldNewIndex
