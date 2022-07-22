@@ -60,14 +60,15 @@ if getgenv().aim_at == nil then
     getgenv().aim_at = "Head"
 end
 
-if getgenv().FontValue == nil then
+if not getgenv().FontValue then
     local teams
     for key, value in pairs(getgc(true)) do
-        if type(value) == "function" and debug.getinfo(value).name =="sortTeamList" then
-            local Teamtable = debug.getupvalue(value, 1)
+        if type(value) == "table" and rawget(value, "Teams") then
+            local Teamtable = value.Teams
             if type(Teamtable) == "table" then
                 teams = Teamtable
             end
+            break
         end
     end
 
