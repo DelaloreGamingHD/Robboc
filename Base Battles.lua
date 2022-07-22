@@ -25,6 +25,38 @@ fovcircle.Transparency = 1
 fovcircle.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2)
 
 
+local function hitbox()
+    local Players = game:GetService("Players")
+    local OldNewIndex
+    local parent = game.Parent
+    getgenv().HeadSize = 50
+    OldNewIndex = hookmetamethod(game, "__newindex", function(Self, Index, ...)
+        if not checkcaller() and tostring(Self) == "Head" and tostring(Index) == "Size" and Self ~= Players.LocalPlayer.Character.Head then
+            return Vector3.new(getgenv().HeadSize,getgenv().HeadSize,getgenv().HeadSize)
+        end
+        return OldNewIndex(Self, Index, ...)
+    end)
+
+
+
+    local OldIndex
+    OldIndex = hookmetamethod(game, "__index", function(Self, Index)
+        if tostring(Self) == "OriginalSize" and tostring(Index) == "Value" and tostring(Self.parent) == "Head" and Self.parent ~= Players.LocalPlayer.Character.Head then
+            return Vector3.new(getgenv().HeadSize,getgenv().HeadSize,getgenv().HeadSize)
+        end
+        if tostring(Self) == "Head" and tostring(Index) == "Size" and Self ~= Players.LocalPlayer.Character.Head then
+            return Vector3.new(getgenv().HeadSize,getgenv().HeadSize,getgenv().HeadSize)
+        end
+        return OldIndex(Self, Index)
+    end)
+
+    for _, value in pairs(Players:GetPlayers()) do
+        if value.Character and value.Character:FindFirstChild("Head") then
+            print(value.Character.Head.Size)
+        end
+    end
+end
+
 
 
 
@@ -45,9 +77,16 @@ b:Button(
 
 --HitBox
 b:Button(
-    "HitBox dm-No idea#7972-",
+    "HitBox",
     function()
-        print("Hit Box is gone! No idea#7972")
+        if not getgenv().HeadSize then
+            hitbox()
+            game.StarterGui:SetCore("ChatMakeSystemMessage", {
+                Text = "Takes time for hitbox to work!"; --chat notification
+                Font = Enum.Font.ArialBold; --font changeable
+                FontSize = Enum.FontSize.Size48; --font size changeable
+            })
+        end
     end
 )
 --Make all guns automatic
