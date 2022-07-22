@@ -108,7 +108,12 @@ local function closestPlayer(fov)
     local target = nil
     local closest = fov or math.huge
     for i,v in ipairs(players:GetPlayers()) do
-        local character = v.Character
+        local character
+        if v.character then
+            character = v.Character
+        else
+            return nil
+        end
         if v.Character ~= nil and v.Character:FindFirstChildOfClass("Humanoid") ~= nil and v.Character:FindFirstChild("HumanoidRootPart") ~= nil and v.Character:FindFirstChildOfClass("Humanoid").Health > 0 and v.Character:FindFirstChild("Head") ~= nil and v.TeamColor ~= client.TeamColor then
             local _, onscreen = camera:WorldToScreenPoint(character.Head.Position)
             if onscreen then
