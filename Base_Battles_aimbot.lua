@@ -101,9 +101,13 @@ uis.InputBegan:Connect(function(input)
     end
 end)
 
+uis.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton2 then
+        isAiming = false
+    end
+end)
 
-
-rs.RenderStepped:connect(function()    
+rs.RenderStepped:connect(function()
     if isAiming then
         local t = closestPlayer(getgenv().fov)
         if t then
