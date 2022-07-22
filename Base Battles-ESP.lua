@@ -6,14 +6,16 @@ if not getgenv() then
     game.Players.LocalPlayer:Kick("Your exploit does not support this!")
 end
 
+
 if not getgenv().FontValue then
     local teams
     for key, value in pairs(getgc(true)) do
-        if type(value) == "function" and debug.getinfo(value).name =="sortTeamList" then
-            local Teamtable = debug.getupvalue(value, 1)
+        if type(value) == "table" and rawget(value, "Teams") then
+            local Teamtable = value.Teams
             if type(Teamtable) == "table" then
                 teams = Teamtable
             end
+            break
         end
     end
 
