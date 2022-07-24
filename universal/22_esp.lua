@@ -11,9 +11,10 @@ local camera = workspace.CurrentCamera
 
 getgenv().ESP = {
     esp_is_enabled = true;
+    tracer = true;
     TeamCheck = false;
-    close = {0, 255, 0};
-    far = {255, 0, 0};
+    close = {0.46239566802978518,1,0};
+    far = {255,0,0};
 }
 
 
@@ -111,9 +112,14 @@ local function create_esp(plr : Player)
   text_info.Center = true
   text_info.Font = 1
   text_info.Outline = true
+  local  line = Drawing.new("Line")
+  line.Thickness = 1.5
+  line.Transparency = 0.5
+  
   local function update_esp()
     local UpdateESP
     UpdateESP = RunService.RenderStepped:Connect(function(deltaTime)
+    task.wait(deltaTime)
     if getgenv().ESP.esp_is_enabled and plr.Name ~= client.Name and plr.Character and isTeam(plr) == false and plr.Character:FindFirstChild(rootPart) and plr.Character:FindFirstChild("Head") and isAlive(plr) and running_esp[plr.Name] ~= nil then
       local _,is_visible = camera:WorldToViewportPoint(plr.Character[rootPart].Position)
       local distance = client:DistanceFromCharacter(plr.Character[rootPart].Position)
@@ -130,10 +136,14 @@ local function create_esp(plr : Player)
           --local headPos, _ = camera:WorldToViewportPoint(topRight)
           text_info.Position = Vector2.new(topRight.X, topRight.Y)
           text_info.Color = Color3.new(getgenv().ESP.close[1], getgenv().ESP.close[2], getgenv().ESP.close[3]):Lerp(Color3.new(getgenv().ESP.far[1], getgenv().ESP.far[2], getgenv().ESP.close[3]),distance / 150)
-          text_info.Size = math.clamp(30 - distance / 10, 10, 30)
+          text_info.Size = math.clamp(30 - distance / 10, 15, 30)
           text_info.Text = plr.Name .. " | " .. math.round(distance) .. " sd"
           text_info.Visible = true
           text_info.Transparency = math.clamp((500 - distance) / 200, 0.2, 1)
+          line.From = Vector2.new(camera.ViewportSize.X/2,camera.ViewportSize.Y)
+          line.To = Vector2.new(topLeft.X,topLeft.Y)
+          line.Color = plr.TeamColor.Color or  Color3.new(getgenv().ESP.close[1], getgenv().ESP.close[2], getgenv().ESP.close[3]):Lerp(Color3.new(getgenv().ESP.far[1], getgenv().ESP.far[2], getgenv().ESP.close[3]),distance / 150)
+          line.Visible = true and getgenv().ESP.tracer
           quad.PointA = Vector2.new(topRight.X, topRight.Y)
           quad.PointB = Vector2.new(topLeft.X, topLeft.Y)
           quad.PointC = Vector2.new(bottomLeft.X, bottomLeft.Y)
@@ -145,18 +155,22 @@ local function create_esp(plr : Player)
         else
           quad.Visible = false
           text_info.Visible = false
+          line.Visible = false
         end
       else
         quad.Visible = false
         text_info.Visible = false
+        line.Visible = false
       end
     else
       if quad.__OBJECT_EXISTS and text_info.__OBJECT_EXISTS then
         quad.Visible = false
         text_info.Visible = false
+        line.Visible = false
       end
       if Players:FindFirstChild(plr.Name) == nil then
         text_info:Remove()
+        line:Remove()
         UpdateESP:Disconnect()
       end
     end
