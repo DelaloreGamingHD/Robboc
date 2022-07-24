@@ -113,8 +113,8 @@ local function create_esp(plr : Player)
   text_info.Font = 1
   text_info.Outline = true
   local  line = Drawing.new("Line")
-  line.Thickness = 1.5
-  line.Transparency = 0.5
+  line.Thickness = 2
+  line.Transparency = 1
   
   local function update_esp()
     local UpdateESP
