@@ -136,7 +136,7 @@ local function create_esp(plr : Player)
           --local headPos, _ = camera:WorldToViewportPoint(topRight)
           text_info.Position = Vector2.new(topLeft.X, topLeft.Y - text_info.TextBounds.Y/2)
           text_info.Color = Color3.new(getgenv().ESP.close[1], getgenv().ESP.close[2], getgenv().ESP.close[3]):Lerp(Color3.new(getgenv().ESP.far[1], getgenv().ESP.far[2], getgenv().ESP.close[3]),distance / 150)
-          text_info.Size = math.clamp(30 - distance / 10, 15, 30)
+          text_info.Size = math.clamp(30 - distance / 10, 10, 30)
           text_info.Text = plr.Name .. " | " .. math.round(distance) .. " sd"
           text_info.Visible = true
           text_info.Transparency = math.clamp((500 - distance) / 200, 0.2, 1)
