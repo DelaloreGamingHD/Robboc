@@ -134,7 +134,7 @@ local function create_esp(plr : Player)
 
         if  (TR_visible or TL_visible or BL_visible or BL_visible) then
           --local headPos, _ = camera:WorldToViewportPoint(topRight)
-          text_info.Position = Vector2.new(topRight.X, topRight.Y)
+          text_info.Position = Vector2.new(topLeft.X, topLeft.Y - text_info.TextBounds.Y/2)
           text_info.Color = Color3.new(getgenv().ESP.close[1], getgenv().ESP.close[2], getgenv().ESP.close[3]):Lerp(Color3.new(getgenv().ESP.far[1], getgenv().ESP.far[2], getgenv().ESP.close[3]),distance / 150)
           text_info.Size = math.clamp(30 - distance / 10, 15, 30)
           text_info.Text = plr.Name .. " | " .. math.round(distance) .. " sd"
