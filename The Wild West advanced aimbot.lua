@@ -136,7 +136,16 @@ OldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(Self, ...)
                 getgenv().team_check = false
             end
             return
+		elseif string.find(args[1]:sub(1, 1), "!") then
+			game.StarterGui:SetCore("ChatMakeSystemMessage", {
+				Text = "What??";
+				Color = Color3.fromRGB(255, 242, 0);
+				Font = Enum.Font.SourceSansBold;
+				FontSize = Enum.FontSize.Size60;
+			})
+			return
         end
+		
     end
     return OldNamecall(Self, ...)
 end))
@@ -180,13 +189,14 @@ local function predict_position(part)
     else
         Origin = client.Character.Head.Position
     end
-    local _,traveltime = trajectory(Origin, Vector3.new(0,-1,0), part.Position, gun.SharedData.ProjectilePower)
+    local _,traveltime = trajectory(Origin, Vector3.new(0,-workspace.Gravity,0), part.Position, gun.SharedData.ProjectilePower)
     
     return part.position + (part.Velocity * traveltime)
 end
 
 
-getgenv().aim_key = Enum.KeyCode.E
+
+getgenv().aim_key = Enum.KeyCode.F
 RunService.RenderStepped:Connect(function()
     if UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton2) or UserInputService:IsKeyDown(getgenv().aim_key) then
         local target = get_closest_player(getgenv().fov)
@@ -203,7 +213,7 @@ end)
 
 
 --- Calculate velocity
-local RunService = game:GetService("RunService")
+local RunService = GetService(game, "RunService")
 local Heartbeat = RunService.Heartbeat
 local deltaTime
 function setDelat()
