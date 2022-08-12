@@ -189,7 +189,7 @@ local function predict_position(part)
     else
         Origin = client.Character.Head.Position
     end
-    local _,traveltime = trajectory(Origin, Vector3.new(0,-workspace.Gravity,0), part.Position, gun.SharedData.ProjectilePower)
+    local _,traveltime = trajectory(Origin, Vector3.new(0,-1,0), part.Position, gun.SharedData.ProjectilePower)
     
     return part.position + (part.Velocity * traveltime)
 end
