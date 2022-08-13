@@ -67,7 +67,7 @@ local function isAlive(plr)
         return true
     end
 end
-getgenv().no_vis = true
+getgenv().vischeck = false
 local function Is_visible(pos,...)
     if getgenv().no_vis == true then
         return true
@@ -75,12 +75,11 @@ local function Is_visible(pos,...)
     return #camera:GetPartsObscuringTarget({pos},{client.Character,...}) == 0
 end
 
-
 local function get_closest_player(fov)
     local target
     local magnitude = fov or math.huge
     for _, plr in pairs(players:GetPlayers()) do
-        if plr.Name ~= client.Name and plr.Character ~= nil and FindFirstChild(plr.Character, "Head") and Is_visible(plr.Character.Head.Position,plr.Character) and isTeam(plr) == false and FindFirstChild(plr.Character, rootPart) and isAlive(plr) then
+        if plr.Name ~= client.Name and plr.Character ~= nil and FindFirstChild(plr.Character, "Head") and Is_visible(plr.Character.PrimaryPart.Position,plr.Character) and isTeam(plr) == false and FindFirstChild(plr.Character, rootPart) and isAlive(plr) then
             local character = plr.Character
             local screen_pos, on_screen = WorldToViewportPoint(camera, character.Head.Position)
             local screen_pos = Vector2.new(screen_pos.X, screen_pos.Y)
@@ -103,7 +102,7 @@ local function aim_at(position, smoothness)
 end
 
 game.StarterGui:SetCore("ChatMakeSystemMessage", {
-    Text = "Available commands:\n!setfov [number] 🤪\n!setsm [number] 🤪\n!teamcheck [true/false]";
+    Text = "Available commands:\n!setfov [number] 🤪\n!setsm [number] 🤪\n!teamcheck [true/false] \n!vischeck [true/false]";
     Color = Color3.fromRGB(255,0,0);
     Font = Enum.Font.SourceSansBold;
     FontSize = Enum.FontSize.Size60;
@@ -136,6 +135,14 @@ OldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(Self, ...)
                 getgenv().team_check = false
             end
             return
+        elseif string.find(args[1]:lower(), "!vischeck") then
+                local command = string.split(args[1], " ")
+                if command[2] == "true" then
+                    getgenv().vischeck = true
+                else
+                    getgenv().vischeck = false
+                end
+                return
 		elseif string.find(args[1]:sub(1, 1), "!") then
 			game.StarterGui:SetCore("ChatMakeSystemMessage", {
 				Text = "What??";
